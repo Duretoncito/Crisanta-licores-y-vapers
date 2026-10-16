@@ -252,16 +252,16 @@
 
 <script>
   // ✏️ Tu número con indicativo 57, sin + ni espacios
-  const WHATSAPP = "573001234567";
+  const WHATSAPP = "573244847215";
 
   // ✏️ Mensaje del botón flotante
-  const MENSAJE_GENERAL = "Hola, vi el catálogo de Crisanta y quiero hacer una consulta";
+  const MENSAJE_GENERAL = "Hola, me interesa realizar un pedido";
 
   // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
-  const ORDEN = ["Destilados", "Licores", "Cervezas", "Vapers"];
+  const ORDEN = [ "Vapers", "Destilados", "Licores", "Cervezas",];
 
   // ✏️ Nombre de la sección automática de promociones
-  const PROMO = "🔥 Promociones";
+  const PROMO = "🔥Promociones";
 
   // ✏️ Etiquetas disponibles y su color
   const ETIQUETAS = {
@@ -590,7 +590,7 @@
   $("m-agregar").onclick = () => {
     const p = sel.p;
     if (p.sabores && p.sabores.length && sel.sabor === null) {
-      $("m-ayuda").textContent = "👆 Elige un sabor para agregarlo a tu lista";
+      $("m-ayuda").textContent = "Elige un sabor para agregarlo a tu lista";
       $("m-ayuda").classList.add("alerta");
       return;
     }
@@ -635,7 +635,7 @@
     $("lista-total").innerHTML = total ? `<span>Total aproximado</span><span>${fmt(total)}</span>` : "";
 
     const lineas = lista.map(i => `• ${i.cantidad} x ${i.texto}${i.precio ? ` - ${fmt(i.precio * i.cantidad)}` : ""}`);
-    $("lista-wa").href = waLink(`Hola, quiero consultar por estos productos:\n${lineas.join("\n")}` +
+    $("lista-wa").href = waLink(`Hola, me interesan estos productos:\n${lineas.join("\n")}` +
       (total ? `\n\nTotal aproximado: ${fmt(total)}` : ""));
 
     if (!n && $("lista-dlg").open) $("lista-dlg").close();
