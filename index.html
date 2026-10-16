@@ -67,6 +67,11 @@
   .sabores-titulo { font-weight: 700; font-size: 14px; margin: 16px 0 8px; color: #1c1714 !important; }
   .sabores { display: flex; flex-wrap: wrap; gap: 6px; }
   .sabor { font-size: 13px; background: #f6ecd9; color: #7a5418; padding: 5px 12px; border-radius: 999px; }
+  .vacio { display: none; text-align: center; padding: 50px 20px; background: #fff; border: 1px solid #ebe5dc; border-radius: 18px; }
+  .vacio-icono { font-size: 36px; }
+  .vacio h3 { margin: 10px 0 6px; font-size: 19px; }
+  .vacio p { color: #6b6058; margin: 0 0 20px; line-height: 1.5; }
+  .vacio-btn { display: inline-block; padding: 12px 22px; border-radius: 10px; text-decoration: none; font: 500 14px 'Inter'; }
   dialog { border: none; border-radius: 18px; padding: 0; max-width: 420px; width: 92%; }
   dialog::backdrop { background: rgba(0,0,0,.55); }
   #m-img { width: 100%; height: 280px; object-fit: contain; padding: 10px; }
@@ -97,7 +102,7 @@
 <div class="top">
   <div class="bar">
     <div class="brand"><div class="logo"><img src="imgfavicon.png.png" alt="Crisanta" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"></div><div><small>LICORES Y VAPERS</small><b>Crisanta</b></div></div>
-    <div class="search">🔍<input id="q" placeholder="Buscar producto…"></div>
+    <div class="search">🔍<input id="q" placeholder="Buscar producto o sabor…"></div>
   </div>
   <div class="pills" id="pills"></div>
 </div>
@@ -114,6 +119,14 @@
     </select>
   </div>
   <div class="grid" id="grid"></div>
+
+  <!-- Mensaje cuando no hay resultados -->
+  <div class="vacio" id="vacio">
+    <div class="vacio-icono">🔍</div>
+    <h3 id="vacio-titulo"></h3>
+    <p>Puede que lo tengamos disponible.<br>Escríbenos y te confirmamos.</p>
+    <a id="vacio-wa" class="wa vacio-btn" target="_blank">Preguntar por WhatsApp</a>
+  </div>
 </main>
 <footer>Venta exclusiva para mayores de 18 años</footer>
 
@@ -159,6 +172,9 @@
   // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
   const ORDEN = ["Destilados", "Licores", "Cervezas", "Vapers"];
 
+  // ✏️ Nombre de la sección automática de promociones
+  const PROMO = "🔥 Promociones";
+
   // ✏️ Etiquetas disponibles y su color
   const ETIQUETAS = {
     "Nuevo": "#2563eb",
@@ -172,6 +188,7 @@
   //                 (si no lo pones, sale "Consultar precio")
   //    precioAntes: opcional, precio tachado para promociones
   //    etiqueta:    opcional -> "Nuevo", "Más vendido", "Promoción" o "Agotado"
+  //                 (los de "Promoción" salen solos en la sección de promociones)
   //    imagen:      una foto  -> imagen: "foto.jpg"
   //    imagenes:    varias    -> imagenes: ["foto1.jpg", "foto2.jpg"]
   //    sabores:     opcional
@@ -180,6 +197,10 @@
     { nombre: "Aguardiente 750 ml", categoria: "Destilados", precio: 65000,
       etiqueta: "Más vendido",
       imagen: "aguardiente.jpg", descripcion: "Botella de 750 ml, ideal para reuniones." },
+
+    { nombre: "Ron añejo 750 ml", categoria: "Destilados", precio: 78000, precioAntes: 88000,
+      etiqueta: "Promoción",
+      imagen: "ron.jpg", descripcion: "Ron añejado de sabor suave." },
 
     { nombre: "Crema de whisky 750 ml", categoria: "Licores", precio: 85000, precioAntes: 95000,
       etiqueta: "Promoción",
@@ -201,24 +222,38 @@
   ];
 
   // ---------- De aquí para abajo no necesitas tocar nada ----------
+  const $ = id => document.getElementById(id);
+  const waLink = texto => `https://wa.me/${WHATSAPP}?text=` + encodeURIComponent(texto);
+
+  // Quita tildes y mayúsculas para que "sandia" encuentre "Sandía" y "anejo" encuentre "añejo"
+  const normalizar = t => (t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
   const fmt = n => "$" + n.toLocaleString("es-CO");
   const precioHTML = p => p.precio
     ? `<div class="precio">${fmt(p.precio)}${p.precioAntes ? `<s>${fmt(p.precioAntes)}</s>` : ''}</div>`
     : `<div class="precio consultar">Consultar precio</div>`;
   const fotos = p => (p.imagenes && p.imagenes.length) ? p.imagenes : [p.imagen];
+
+  const hayPromos = productos.some(p => p.etiqueta === "Promoción");
   const extras = [...new Set(productos.map(p => p.categoria))].filter(c => !ORDEN.includes(c));
-  const cats = ["Todos", ...ORDEN.filter(c => productos.some(p => p.categoria === c)), ...extras];
+  const cats = ["Todos", ...(hayPromos ? [PROMO] : []),
+                ...ORDEN.filter(c => productos.some(p => p.categoria === c)), ...extras];
   let actual = "Todos", busqueda = "";
-  const $ = id => document.getElementById(id);
+
+  const enSeccion = (p, c) =>
+    c === "Todos" ? true :
+    c === PROMO ? p.etiqueta === "Promoción" :
+    p.categoria === c;
+
+  const coincide = p =>
+    normalizar(p.nombre + " " + (p.sabores || []).join(" ")).includes(busqueda);
 
   function ordenar(lista) {
     const modo = $("orden").value;
     return [...lista].sort((a, b) => {
-      // Los agotados siempre van al final
       const agA = a.etiqueta === "Agotado", agB = b.etiqueta === "Agotado";
       if (agA !== agB) return agA ? 1 : -1;
       if (modo === "menor" || modo === "mayor") {
-        // Los que no tienen precio van al final
         if (!a.precio && !b.precio) return 0;
         if (!a.precio) return 1;
         if (!b.precio) return -1;
@@ -233,7 +268,7 @@
   function pintarPills() {
     $("pills").innerHTML = "";
     cats.forEach(c => {
-      const total = c === "Todos" ? productos.length : productos.filter(p => p.categoria === c).length;
+      const total = productos.filter(p => enSeccion(p, c)).length;
       const b = document.createElement("button");
       b.className = "pill" + (c === actual ? " on" : "");
       b.innerHTML = `${c}<span>${total}</span>`;
@@ -243,12 +278,27 @@
   }
 
   function pintar() {
-    const lista = ordenar(productos.filter(p =>
-      (actual === "Todos" || p.categoria === actual) &&
-      p.nombre.toLowerCase().includes(busqueda)));
-    $("titulo").textContent = actual === "Todos" ? "Todos los productos" : actual;
+    const lista = ordenar(productos.filter(p => enSeccion(p, actual) && coincide(p)));
+    $("titulo").textContent =
+      actual === "Todos" ? "Todos los productos" :
+      actual === PROMO ? "Promociones" : actual;
     $("conteo").textContent = lista.length + (lista.length === 1 ? " producto" : " productos");
     $("grid").innerHTML = "";
+
+    // Mensaje cuando no hay resultados
+    if (!lista.length) {
+      const texto = $("q").value.trim();
+      $("vacio-titulo").textContent = texto
+        ? `No encontramos "${texto}"`
+        : "No hay productos en esta sección";
+      $("vacio-wa").href = waLink(texto ? `Hola, ¿tienen ${texto}?` : MENSAJE_GENERAL);
+      $("vacio").style.display = "block";
+      $("grid").style.display = "none";
+      return;
+    }
+    $("vacio").style.display = "none";
+    $("grid").style.display = "";
+
     lista.forEach(p => {
       const f = fotos(p);
       const c = document.createElement("div");
@@ -298,20 +348,18 @@
     } else {
       $("m-sabores-box").style.display = "none";
     }
-    $("m-wa").href = `https://wa.me/${WHATSAPP}?text=` +
-      encodeURIComponent(`Hola, me interesa el producto: ${p.nombre}`);
+    $("m-wa").href = waLink(`Hola, me interesa el producto: ${p.nombre}`);
     $("modal").showModal();
   }
 
-  // Botón volver arriba: aparece al bajar
   window.addEventListener("scroll", () => {
     $("arriba").classList.toggle("ver", window.scrollY > 400);
   });
   $("arriba").onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-  $("flotante").href = `https://wa.me/${WHATSAPP}?text=` + encodeURIComponent(MENSAJE_GENERAL);
+  $("flotante").href = waLink(MENSAJE_GENERAL);
   $("orden").onchange = pintar;
-  $("q").oninput = e => { busqueda = e.target.value.toLowerCase(); pintar(); };
+  $("q").oninput = e => { busqueda = normalizar(e.target.value.trim()); pintar(); };
   $("modal").onclick = e => { if (e.target.id === "modal") $("modal").close(); };
   pintarPills(); pintar();
 </script>
