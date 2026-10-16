@@ -33,9 +33,10 @@
   .head h1 { margin: 0; font-size: 26px; }
   .head span { color: #64748b; font-size: 14px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
-  .card { background: #fff; border-radius: 18px; overflow: hidden; cursor: pointer; border: 1px solid #e5e9f0; transition: transform .2s; }
+  .card { background: #fff; border-radius: 18px; overflow: hidden; cursor: pointer; border: 1px solid #e5e9f0; transition: transform .2s; position: relative; }
   .card:hover { transform: translateY(-3px); }
   .card img { width: 100%; height: 220px; object-fit: contain; background: #fff; padding: 10px; }
+  .nfotos { position: absolute; top: 10px; right: 10px; background: rgba(15,23,42,.75); color: #fff; font-size: 12px; font-weight: 500; padding: 3px 9px; border-radius: 999px; }
   .info { padding: 14px 16px 16px; }
   .info h3 { margin: 0 0 6px; font-size: 16px; text-transform: uppercase; }
   .info p { margin: 0 0 12px; font-size: 14px; color: #64748b; line-height: 1.5;
@@ -46,7 +47,11 @@
   .sabor { font-size: 13px; background: #eef2ff; color: #3730a3; padding: 5px 12px; border-radius: 999px; }
   dialog { border: none; border-radius: 18px; padding: 0; max-width: 420px; width: 92%; }
   dialog::backdrop { background: rgba(0,0,0,.55); }
-  dialog img { width: 100%; max-height: 300px; object-fit: contain; padding: 10px; }
+  #m-img { width: 100%; height: 280px; object-fit: contain; padding: 10px; }
+  .thumbs { display: flex; gap: 8px; padding: 0 20px; overflow-x: auto; }
+  .thumbs img { width: 58px; height: 58px; flex-shrink: 0; object-fit: contain; padding: 4px;
+                border: 2px solid #e5e9f0; border-radius: 10px; cursor: pointer; background: #fff; }
+  .thumbs img.on { border-color: #2563eb; }
   .m { padding: 16px 20px 20px; }
   .m h2 { margin: 0 0 8px; text-transform: uppercase; font-size: 20px; }
   .m p { color: #475569; line-height: 1.6; }
@@ -74,6 +79,7 @@
 
 <dialog id="modal">
   <img id="m-img" alt="">
+  <div class="thumbs" id="m-thumbs"></div>
   <div class="m">
     <h2 id="m-nombre"></h2>
     <span class="badge" id="m-garantia">🛡 Garantía incluida</span>
@@ -97,14 +103,13 @@
   const ORDEN = ["Destilados", "Licores", "Cervezas", "Vapers"];
 
   // ✏️ Tus productos
-  //    sabores: opcional, solo si el producto tiene sabores
-  //    garantia: true  -> muestra la etiqueta "Garantía incluida"
+  //    imagen:   una sola foto       -> imagen: "foto.jpg"
+  //    imagenes: varias fotos        -> imagenes: ["foto1.jpg", "foto2.jpg"]
+  //    sabores:  opcional
+  //    garantia: true -> muestra "Garantía incluida"
   const productos = [
     { nombre: "Aguardiente 750 ml", categoria: "Destilados",
       imagen: "aguardiente.jpg", descripcion: "Descripción del aguardiente." },
-
-    { nombre: "Ron añejo 750 ml", categoria: "Destilados",
-      imagen: "ron.jpg", descripcion: "Descripción del ron." },
 
     { nombre: "Crema de whisky 750 ml", categoria: "Licores",
       imagen: "crema.jpg", descripcion: "Descripción del licor." },
@@ -113,15 +118,13 @@
       imagen: "cerveza.jpg", descripcion: "Six pack de latas de 330 ml." },
 
     { nombre: "Vaper 5 mil usos", categoria: "Vapers",
-      imagen: "vaper1.jpg", descripcion: "Desechable recargable, batería de 500 mAh.",
+      imagenes: ["vaper1.jpg", "vaper1-b.jpg", "vaper1-c.jpg"],
+      descripcion: "Desechable recargable, batería de 500 mAh.",
       sabores: ["Mango", "Fresa", "Uva", "Sandía", "Menta"], garantia: true },
-
-    { nombre: "Vaper 10 mil usos", categoria: "Vapers",
-      imagen: "vaper2.jpg", descripcion: "Batería recargable de 650 mAh con pantalla.",
-      sabores: ["Blue razz", "Lychee", "Piña colada"], garantia: true },
   ];
 
   // ---------- De aquí para abajo no necesitas tocar nada ----------
+  const fotos = p => (p.imagenes && p.imagenes.length) ? p.imagenes : [p.imagen];
   const extras = [...new Set(productos.map(p => p.categoria))].filter(c => !ORDEN.includes(c));
   const cats = ["Todos", ...ORDEN.filter(c => productos.some(p => p.categoria === c)), ...extras];
   let actual = "Todos", busqueda = "";
@@ -147,9 +150,11 @@
     $("conteo").textContent = lista.length + (lista.length === 1 ? " producto" : " productos");
     $("grid").innerHTML = "";
     lista.forEach(p => {
+      const f = fotos(p);
       const c = document.createElement("div");
       c.className = "card";
-      c.innerHTML = `<img src="${p.imagen}" alt="${p.nombre}">
+      c.innerHTML = `<img src="${f[0]}" alt="${p.nombre}">
+        ${f.length > 1 ? `<span class="nfotos">+${f.length - 1}</span>` : ''}
         <div class="info"><h3>${p.nombre}</h3><p>${p.descripcion}</p>
         ${p.garantia ? '<span class="badge">🛡 Garantía incluida</span>' : ''}</div>`;
       c.onclick = () => abrir(p);
@@ -158,7 +163,22 @@
   }
 
   function abrir(p) {
-    $("m-img").src = p.imagen;
+    const f = fotos(p);
+    $("m-img").src = f[0];
+    $("m-thumbs").innerHTML = "";
+    if (f.length > 1) {
+      f.forEach((src, i) => {
+        const t = document.createElement("img");
+        t.src = src;
+        if (i === 0) t.className = "on";
+        t.onclick = () => {
+          $("m-img").src = src;
+          [...$("m-thumbs").children].forEach(x => x.classList.remove("on"));
+          t.classList.add("on");
+        };
+        $("m-thumbs").appendChild(t);
+      });
+    }
     $("m-nombre").textContent = p.nombre;
     $("m-desc").textContent = p.descripcion;
     $("m-garantia").style.display = p.garantia ? "inline-block" : "none";
