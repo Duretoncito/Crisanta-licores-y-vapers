@@ -61,7 +61,7 @@
   .foto { height: 220px; background: #fff; }
   .foto.cargando, .galeria.cargando { background: linear-gradient(90deg, #f3eee7 25%, #faf7f2 50%, #f3eee7 75%);
                                       background-size: 200% 100%; animation: cargando 1.2s linear infinite; }
-  .foto img { width: 100%; height: 220px; object-fit: contain; padding: 10px; display: block; opacity: 0; transition: opacity .45s ease; }
+  .foto img { width: 100%; height: 220px; object-fit: cover; padding: 0; display: block; opacity: 0; transition: opacity .45s ease; }
   .foto.lista img { opacity: 1; }
   .card.agotado .foto.lista img { opacity: .45; filter: grayscale(1); }
 
@@ -104,7 +104,7 @@
   dialog.cerrando::backdrop { animation: aclarar .21s ease forwards; }
   dialog.cambio .galeria, dialog.cambio .thumbs, dialog.cambio .m { animation: aparecer .35s ease backwards; }
   .galeria { position: relative; touch-action: pan-y; background: #fff; }
-  #m-img { width: 100%; height: 280px; object-fit: contain; padding: 10px; display: block; user-select: none; opacity: 0; transition: opacity .35s ease; }
+  #m-img { width: 100%; height: 280px; object-fit: cover; padding: 0; display: block; user-select: none; opacity: 0; transition: opacity .35s ease; }
   .galeria.lista #m-img { opacity: 1; }
   .flecha { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; border: none;
             background: rgba(255,255,255,.95); box-shadow: 0 2px 8px rgba(0,0,0,.15); font-size: 22px; cursor: pointer;
@@ -117,7 +117,7 @@
               transition: transform .2s; }
   .cerrar-x:hover { transform: rotate(90deg); }
   .thumbs { display: flex; gap: 8px; padding: 0 20px; overflow-x: auto; }
-  .thumbs img { width: 58px; height: 58px; flex-shrink: 0; object-fit: contain; padding: 4px;
+  .thumbs img { width: 58px; height: 58px; flex-shrink: 0; object-fit: cover; padding: 0;
                 border: 2px solid #ebe5dc; border-radius: 10px; cursor: pointer; background: #fff; transition: border-color .2s, transform .1s; }
   .thumbs img.on { border-color: var(--dorado); }
   .m { padding: 16px 20px 20px; }
@@ -148,7 +148,7 @@
   .rel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .rel-item { border: 1px solid #ebe5dc; border-radius: 12px; overflow: hidden; cursor: pointer; background: #fff; transition: transform .2s, border-color .2s; }
   .rel-item:hover { transform: translateY(-2px); border-color: var(--dorado); }
-  .rel-item img { width: 100%; height: 80px; object-fit: contain; padding: 6px; display: block; }
+  .rel-item img { width: 100%; height: 80px; object-fit: cover; padding: 0; display: block; }
   .rel-item div { padding: 6px 8px 8px; }
   .rel-item b { font-size: 11px; line-height: 1.3; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .rel-item span { font-size: 12px; color: var(--dorado-oscuro); font-weight: 600; }
@@ -521,7 +521,7 @@
       c.className = "card" + (agotado ? " agotado" : "");
       c.style.animationDelay = Math.min(i * 60, 480) + "ms";   // una tras otra
       c.innerHTML = `<div class="foto cargando"><img src="${f[0]}" alt="${p.nombre}" loading="lazy" decoding="async"></div>
-        ${p.etiqueta ? `<span class="etiqueta${BRILLAN.includes(p.etiqueta) ? ' brilla' : ''}" style="background:${ETIQUETAS[p.etiqueta] || '#6b7280'}">${p.etiqueta}</span>` : ''}
+        ${p.etiqueta ? `<span class="etiqueta${BRILLAN.includes(p.etiqueta) ? ' brilla' : ''}" style="background:${ETIQUETAS[p.etiqueta] \vert{}\vert{} '#6b7280'}">${p.etiqueta}</span>` : ''}
         ${f.length > 1 ? `<span class="nfotos">+${f.length - 1}</span>` : ''}
         <div class="info"><h3>${p.nombre}</h3>${precioCard(p)}<p>${p.descripcion}</p>
         <div class="info-foot">
