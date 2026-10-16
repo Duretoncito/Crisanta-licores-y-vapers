@@ -41,9 +41,12 @@
   .pill span { font-size: 11px; background: rgba(255,255,255,.15); padding: 2px 8px; border-radius: 999px; }
   .pill.on span { background: rgba(0,0,0,.15); }
   main { max-width: 1100px; margin: auto; padding: 24px 16px; }
-  .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; }
+  .head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
   .head h1 { margin: 0; font-size: 26px; }
-  .head span { color: #7c6f64; font-size: 14px; }
+  .head span { display: block; margin-top: 2px; color: #7c6f64; font-size: 14px; }
+  .orden { padding: 10px 14px; border: 1px solid #d6cdc2; border-radius: 10px; background: #fff;
+           font: 500 14px 'Inter'; color: #1c1714; cursor: pointer; outline: none; }
+  .orden:focus { border-color: var(--dorado); }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
   .card { background: #fff; border-radius: 18px; overflow: hidden; cursor: pointer; border: 1px solid #ebe5dc; transition: transform .2s; position: relative; }
   .card:hover { transform: translateY(-3px); }
@@ -81,6 +84,12 @@
   .flotante { position: fixed; right: 18px; bottom: 18px; width: 58px; height: 58px; border-radius: 50%; background: #25d366;
               display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0,0,0,.25); z-index: 20; transition: transform .2s; }
   .flotante:hover { transform: scale(1.08); }
+  .arriba { position: fixed; right: 25px; bottom: 88px; width: 44px; height: 44px; border-radius: 50%;
+            background: var(--oscuro); border: 1px solid var(--borde-oscuro); display: grid; place-items: center;
+            cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.25); z-index: 20;
+            opacity: 0; pointer-events: none; transform: translateY(10px); transition: all .25s; }
+  .arriba.ver { opacity: 1; pointer-events: auto; transform: none; }
+  .arriba:hover { background: var(--oscuro-2); }
   footer { text-align: center; font-size: 13px; color: #9c9087; padding: 10px 0 90px; }
 </style>
 </head>
@@ -94,10 +103,24 @@
 </div>
 
 <main>
-  <div class="head"><h1 id="titulo"></h1><span id="conteo"></span></div>
+  <div class="head">
+    <div><h1 id="titulo"></h1><span id="conteo"></span></div>
+    <select id="orden" class="orden" aria-label="Ordenar productos">
+      <option value="recomendados">Recomendados</option>
+      <option value="menor">Menor precio</option>
+      <option value="mayor">Mayor precio</option>
+      <option value="az">Nombre: A - Z</option>
+      <option value="za">Nombre: Z - A</option>
+    </select>
+  </div>
   <div class="grid" id="grid"></div>
 </main>
 <footer>Venta exclusiva para mayores de 18 años</footer>
+
+<!-- Botón volver arriba -->
+<button id="arriba" class="arriba" aria-label="Volver arriba">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c9973f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <!-- Botón flotante de WhatsApp -->
 <a id="flotante" class="flotante" target="_blank" aria-label="Escríbenos por WhatsApp">
@@ -188,6 +211,25 @@
   let actual = "Todos", busqueda = "";
   const $ = id => document.getElementById(id);
 
+  function ordenar(lista) {
+    const modo = $("orden").value;
+    return [...lista].sort((a, b) => {
+      // Los agotados siempre van al final
+      const agA = a.etiqueta === "Agotado", agB = b.etiqueta === "Agotado";
+      if (agA !== agB) return agA ? 1 : -1;
+      if (modo === "menor" || modo === "mayor") {
+        // Los que no tienen precio van al final
+        if (!a.precio && !b.precio) return 0;
+        if (!a.precio) return 1;
+        if (!b.precio) return -1;
+        return modo === "menor" ? a.precio - b.precio : b.precio - a.precio;
+      }
+      if (modo === "az") return a.nombre.localeCompare(b.nombre, "es");
+      if (modo === "za") return b.nombre.localeCompare(a.nombre, "es");
+      return 0;
+    });
+  }
+
   function pintarPills() {
     $("pills").innerHTML = "";
     cats.forEach(c => {
@@ -201,9 +243,9 @@
   }
 
   function pintar() {
-    const lista = productos.filter(p =>
+    const lista = ordenar(productos.filter(p =>
       (actual === "Todos" || p.categoria === actual) &&
-      p.nombre.toLowerCase().includes(busqueda));
+      p.nombre.toLowerCase().includes(busqueda)));
     $("titulo").textContent = actual === "Todos" ? "Todos los productos" : actual;
     $("conteo").textContent = lista.length + (lista.length === 1 ? " producto" : " productos");
     $("grid").innerHTML = "";
@@ -261,7 +303,14 @@
     $("modal").showModal();
   }
 
+  // Botón volver arriba: aparece al bajar
+  window.addEventListener("scroll", () => {
+    $("arriba").classList.toggle("ver", window.scrollY > 400);
+  });
+  $("arriba").onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
   $("flotante").href = `https://wa.me/${WHATSAPP}?text=` + encodeURIComponent(MENSAJE_GENERAL);
+  $("orden").onchange = pintar;
   $("q").oninput = e => { busqueda = e.target.value.toLowerCase(); pintar(); };
   $("modal").onclick = e => { if (e.target.id === "modal") $("modal").close(); };
   pintarPills(); pintar();
