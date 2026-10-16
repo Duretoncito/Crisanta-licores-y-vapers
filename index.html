@@ -1,1603 +1,733 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <meta name="robots" content="noindex, nofollow">
-
 <title>Crisanta licores y vapers</title>
-
 <link rel="icon" type="image/png" href="imgfavicon.png.png">
-
 <meta property="og:title" content="Catálogo - Crisanta">
-
 <meta property="og:description" content="Licores y vapers">
-
 <meta property="og:image" content="https://TUUSUARIO.github.io/TUREPOSITORIO/imgfavicon.png.png">
-
 <meta property="og:type" content="website">
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
-
   /* ✏️ Colores de la página: cambia estos y se actualiza todo */
-
   :root {
-
     --oscuro: #14110f;        /* fondo del encabezado */
-
     --oscuro-2: #1f1a16;      /* fondo del buscador */
-
     --borde-oscuro: #3b3129;  /* bordes del encabezado */
-
     --dorado: #c9973f;        /* color principal (acento) */
-
     --dorado-oscuro: #8a6420; /* acento para textos */
-
     --dorado-suave: #b59a74;  /* textos pequeños del encabezado */
-
     --fondo: #f7f4ef;         /* fondo de la página */
-
   }
-
-
-
   * { box-sizing: border-box; }
-
   body { margin: 0; font-family: 'Inter', sans-serif; background: var(--fondo); color: #1c1714; }
-
-
-
   /* Encabezado */
-
   .top { background: var(--oscuro); position: sticky; top: 0; z-index: 10; }
-
   .bar { max-width: 1100px; margin: auto; padding: 14px 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-
   .brand { display: flex; gap: 12px; align-items: center; flex: 1; min-width: 200px; }
-
   .logo { width: 44px; height: 44px; border-radius: 12px; background: var(--dorado); display: grid; place-items: center; color: var(--oscuro); font-size: 22px; flex-shrink: 0; }
-
   .brand small { display: block; font-size: 11px; letter-spacing: .15em; color: var(--dorado-suave); }
-
   .brand b { color: #fff; font-size: 18px; }
-
   .search { flex: 1; min-width: 220px; display: flex; align-items: center; gap: 8px; background: var(--oscuro-2);
-
             border: 1px solid var(--borde-oscuro); border-radius: 12px; padding: 0 14px; height: 42px; transition: border-color .2s; }
-
   .search:focus-within { border-color: var(--dorado); }
-
   .search input { background: none; border: none; outline: none; color: #fff; flex: 1; font: inherit; }
-
   .pills { max-width: 1100px; margin: auto; padding: 10px 16px 14px; display: flex; gap: 8px; flex-wrap: wrap; }
-
   .pill { border-radius: 999px; padding: 8px 16px; font: 500 14px 'Inter'; border: 1px solid var(--borde-oscuro);
-
           background: none; color: #d6cbbf; cursor: pointer; display: flex; gap: 8px; align-items: center;
-
           transition: background .25s, color .25s, border-color .25s, transform .1s; }
-
   .pill.on { background: var(--dorado); color: var(--oscuro); border-color: var(--dorado); }
-
   .pill span { font-size: 11px; background: rgba(255,255,255,.15); padding: 2px 8px; border-radius: 999px; }
-
   .pill.on span { background: rgba(0,0,0,.15); }
-
-
-
   main { max-width: 1100px; margin: auto; padding: 24px 16px; }
-
   .head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
-
   .head h1 { margin: 0; font-size: 26px; }
-
   .head span { display: block; margin-top: 2px; color: #7c6f64; font-size: 14px; }
-
   .orden { padding: 10px 14px; border: 1px solid #d6cdc2; border-radius: 10px; background: #fff;
-
            font: 500 14px 'Inter'; color: #1c1714; cursor: pointer; outline: none; transition: border-color .2s; }
-
   .orden:focus { border-color: var(--dorado); }
-
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
-
   .card { background: #fff; border-radius: 18px; overflow: hidden; cursor: pointer; border: 1px solid #ebe5dc;
-
           transition: transform .25s, box-shadow .25s; position: relative; animation: aparecer .45s ease backwards; }
-
   .card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(20,17,15,.08); }
-
-
-
   /* Fotos con carga suave */
-
   .foto { height: 220px; background: #fff; }
-
   .foto.cargando, .galeria.cargando { background: linear-gradient(90deg, #f3eee7 25%, #faf7f2 50%, #f3eee7 75%);
-
                                       background-size: 200% 100%; animation: cargando 1.2s linear infinite; }
-
-  .foto img { width: 100%; height: 220px; object-fit: contain; padding: 10px; display: block; opacity: 0; transition: opacity .45s ease; }
-
+  .foto img { width: 100%; height: 220px; object-fit: cover; display: block; opacity: 0; transition: opacity .45s ease; }
   .foto.lista img { opacity: 1; }
-
   .card.agotado .foto.lista img { opacity: .45; filter: grayscale(1); }
-
-
-
-  .etiqueta { position: absolute; top: 10px; left: 10px; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; overflow: hidden; }
-
+  .etiqueta { position: absolute; top: 10px; left: 10px; color: #fff; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 999px; overflow: hidden; display: flex; align-items: center; gap: 6px; }
   .nfotos { position: absolute; top: 10px; right: 10px; background: rgba(20,17,15,.75); color: #fff; font-size: 12px; font-weight: 500; padding: 3px 9px; border-radius: 999px; }
-
   .info { padding: 14px 16px 16px; }
-
   .info h3 { margin: 0 0 4px; font-size: 16px; text-transform: uppercase; }
-
   .info p { margin: 0 0 12px; font-size: 14px; color: #6b6058; line-height: 1.5;
-
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
   .info-foot { display: flex; align-items: center; gap: 8px; min-height: 36px; }
-
   .mas { margin-left: auto; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--oscuro);
-
          color: var(--dorado); font-size: 22px; line-height: 1; cursor: pointer; flex-shrink: 0; transition: background .2s, transform .1s; }
-
   .mas:hover { background: var(--oscuro-2); }
-
   .precio { font-size: 19px; font-weight: 700; color: var(--oscuro); margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
-
   .precio small { font-size: 12px; font-weight: 500; color: #7c6f64; }
-
   .precio s { font-size: 13px; font-weight: 400; color: #9c9087; }
-
   .precio.consultar { font-size: 14px; font-weight: 600; color: var(--dorado-oscuro); }
-
   .badge { font-size: 12px; background: #e7f6ee; color: #15803d; padding: 4px 12px; border-radius: 999px; }
-
-  .tag { color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; position: relative; overflow: hidden; }
-
+  .tag { color: #fff; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 6px; }
   .m-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
-
-
-
   /* Brillo en etiquetas */
-
   .brilla::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
-
                    background: linear-gradient(120deg, transparent, rgba(255,255,255,.6), transparent);
-
                    animation: destello 3.5s ease-in-out infinite; }
-
-
-
   .vacio { display: none; text-align: center; padding: 50px 20px; background: #fff; border: 1px solid #ebe5dc; border-radius: 18px;
-
            animation: aparecer .4s ease backwards; }
-
   .vacio-icono { font-size: 36px; }
-
   .vacio h3 { margin: 10px 0 6px; font-size: 19px; }
-
   .vacio p { color: #6b6058; margin: 0 0 20px; line-height: 1.5; }
-
   .vacio-btn { display: inline-block; padding: 12px 22px; border-radius: 10px; text-decoration: none; font: 500 14px 'Inter'; }
-
-
-
   /* Ventana del producto */
-
   dialog { border: none; border-radius: 18px; padding: 0; max-width: 440px; width: 92%; max-height: 92vh; overflow-y: auto; }
-
   dialog::backdrop { background: rgba(0,0,0,.55); }
-
   dialog[open] { animation: entrar .3s cubic-bezier(.2,.8,.3,1); }
-
   dialog[open]::backdrop { animation: oscurecer .3s ease; }
-
   dialog.cerrando { animation: salir .21s ease forwards; }
-
   dialog.cerrando::backdrop { animation: aclarar .21s ease forwards; }
-
   dialog.cambio .galeria, dialog.cambio .thumbs, dialog.cambio .m { animation: aparecer .35s ease backwards; }
-
   .galeria { position: relative; touch-action: pan-y; background: #fff; }
-
   #m-img { width: 100%; height: 280px; object-fit: contain; padding: 10px; display: block; user-select: none; opacity: 0; transition: opacity .35s ease; }
-
   .galeria.lista #m-img { opacity: 1; }
-
   .flecha { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; border: none;
-
             background: rgba(255,255,255,.95); box-shadow: 0 2px 8px rgba(0,0,0,.15); font-size: 22px; cursor: pointer;
-
             place-items: center; color: #1c1714; transition: transform .1s; }
-
   .flecha:active { transform: translateY(-50%) scale(.9); }
-
   .flecha.izq { left: 10px; }
-
   .flecha.der { right: 10px; }
-
   .cerrar-x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: none;
-
               background: rgba(255,255,255,.95); box-shadow: 0 2px 8px rgba(0,0,0,.15); font-size: 16px; cursor: pointer; z-index: 2;
-
               transition: transform .2s; }
-
   .cerrar-x:hover { transform: rotate(90deg); }
-
   .thumbs { display: flex; gap: 8px; padding: 0 20px; overflow-x: auto; }
-
   .thumbs img { width: 58px; height: 58px; flex-shrink: 0; object-fit: contain; padding: 4px;
-
                 border: 2px solid #ebe5dc; border-radius: 10px; cursor: pointer; background: #fff; transition: border-color .2s, transform .1s; }
-
   .thumbs img.on { border-color: var(--dorado); }
-
   .m { padding: 16px 20px 20px; }
-
   .m h2 { margin: 0 0 4px; text-transform: uppercase; font-size: 20px; }
-
   .m p { color: #5c524b; line-height: 1.6; }
-
   #m-precio.cambia { animation: precioCambio .3s ease; }
-
   .sec-titulo { font-weight: 700; font-size: 14px; margin: 18px 0 8px; color: #1c1714 !important; }
-
   .ayuda { margin: -4px 0 8px; font-size: 13px; color: #9c9087 !important; }
-
   .ayuda.alerta { color: #dc2626 !important; font-weight: 600; animation: sacudir .4s ease; }
-
   .opciones { display: flex; flex-wrap: wrap; gap: 8px; }
-
   .opcion { padding: 8px 14px; border-radius: 10px; border: 1px solid #d6cdc2; background: #fff; font: 500 14px 'Inter'; cursor: pointer; color: #1c1714;
-
             transition: background .2s, border-color .2s, box-shadow .2s, transform .1s; }
-
   .opcion.on { border-color: var(--dorado); background: #faf3e6; box-shadow: inset 0 0 0 1px var(--dorado); }
-
   .sabores { display: flex; flex-wrap: wrap; gap: 6px; }
-
   .sabor { font: 500 13px 'Inter'; background: #f6ecd9; color: #7a5418; padding: 6px 13px; border-radius: 999px; border: none; cursor: pointer;
-
            transition: background .2s, color .2s, transform .1s; }
-
   .sabor.on { background: var(--dorado); color: var(--oscuro); }
-
   .sabor-desc { display: none; margin-top: 10px; background: #faf6ee; border: 1px solid #efe3cc; border-radius: 12px;
-
                 padding: 10px 12px; font-size: 14px; color: #5c524b; line-height: 1.5; animation: aparecer .3s ease backwards; }
-
   .btns { display: flex; gap: 10px; margin-top: 18px; }
-
   .btns a, .btns button { flex: 1; padding: 12px; border-radius: 10px; font: 600 14px 'Inter'; text-align: center; cursor: pointer; text-decoration: none;
-
                           transition: background .2s, transform .1s, filter .2s; }
-
   .btns a:hover { filter: brightness(1.05); }
-
   .agregar { background: var(--oscuro); color: #fff; border: none; }
-
   .agregar.ok { background: #15803d; }
-
   .agregar:disabled { opacity: .45; cursor: not-allowed; }
-
   .wa { background: #22c55e; color: #fff; border: none; }
-
   .rel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-
   .rel-item { border: 1px solid #ebe5dc; border-radius: 12px; overflow: hidden; cursor: pointer; background: #fff; transition: transform .2s, border-color .2s; }
-
   .rel-item:hover { transform: translateY(-2px); border-color: var(--dorado); }
-
   .rel-item img { width: 100%; height: 80px; object-fit: contain; padding: 6px; display: block; }
-
   .rel-item div { padding: 6px 8px 8px; }
-
   .rel-item b { font-size: 11px; line-height: 1.3; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
   .rel-item span { font-size: 12px; color: var(--dorado-oscuro); font-weight: 600; }
-
-
-
   /* Lista de consulta */
-
   .btn-lista { position: fixed; left: 18px; bottom: 18px; height: 52px; padding: 0 18px; border-radius: 999px; border: none;
-
                background: var(--oscuro); color: #fff; font: 600 15px 'Inter'; display: none; align-items: center; gap: 8px;
-
                box-shadow: 0 6px 18px rgba(0,0,0,.25); cursor: pointer; z-index: 20; animation: aparecer .3s ease backwards; }
-
   .btn-lista.pop { animation: pop .4s ease; }
-
   .btn-lista span { background: var(--dorado); color: var(--oscuro); min-width: 24px; height: 24px; border-radius: 999px;
-
                     display: grid; place-items: center; font-size: 13px; padding: 0 6px; }
-
   .lista-dlg { padding: 20px; }
-
   .lista-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-
   .lista-head h2 { margin: 0; font-size: 20px; }
-
   .x { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #e5ddd2; background: #fff; cursor: pointer; font-size: 15px; transition: transform .2s; }
-
   .x:hover { transform: rotate(90deg); }
-
   .item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #f0ebe3; }
-
   .item-info b { display: block; font-size: 14px; }
-
   .item-info span { font-size: 13px; color: #7c6f64; }
-
   .cant { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-
   .cant button { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #d6cdc2; background: #fff; font-size: 16px; cursor: pointer; transition: transform .1s; }
-
   .lista-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; padding: 14px 0 4px; }
-
   .lista-nota { font-size: 12px; color: #9c9087; margin: 4px 0 14px; }
-
   .lista-enviar { display: block; text-align: center; padding: 13px; border-radius: 12px; text-decoration: none; font: 600 15px 'Inter'; transition: filter .2s, transform .1s; }
-
   .lista-enviar:hover { filter: brightness(1.05); }
-
   .lista-vaciar { display: block; width: 100%; margin-top: 8px; background: none; border: none; color: #9c9087; font: 500 13px 'Inter'; cursor: pointer; padding: 8px; }
-
-
-
   .toast { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%) translateY(20px); background: var(--oscuro); color: #fff;
-
            padding: 10px 18px; border-radius: 999px; font-size: 14px; opacity: 0; transition: all .25s; z-index: 30; pointer-events: none; }
-
   .toast.ver { opacity: 1; transform: translateX(-50%); }
-
   .flotante { position: fixed; right: 18px; bottom: 18px; width: 58px; height: 58px; border-radius: 50%; background: #25d366;
-
               display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0,0,0,.25); z-index: 20; transition: transform .2s; }
-
   .flotante:hover { transform: scale(1.08); }
-
   .arriba { position: fixed; right: 25px; bottom: 88px; width: 44px; height: 44px; border-radius: 50%;
-
             background: var(--oscuro); border: 1px solid var(--borde-oscuro); display: grid; place-items: center;
-
             cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.25); z-index: 20;
-
             opacity: 0; pointer-events: none; transform: translateY(10px); transition: all .25s; }
-
   .arriba.ver { opacity: 1; pointer-events: auto; transform: none; }
-
   footer { text-align: center; font-size: 13px; color: #9c9087; padding: 10px 0 90px; }
-
-
-
   /* Efecto de presionar en los botones */
-
   .pill:active, .opcion:active, .sabor:active, .mas:active, .thumbs img:active,
-
   .btns a:active, .btns button:active:not(:disabled), .cant button:active, .lista-enviar:active { transform: scale(.94); }
-
-
-
   /* Animaciones */
-
   @keyframes aparecer     { from { opacity: 0; transform: translateY(14px); } }
-
   @keyframes entrar       { from { opacity: 0; transform: translateY(24px) scale(.97); } }
-
   @keyframes salir        { to   { opacity: 0; transform: translateY(16px) scale(.97); } }
-
   @keyframes oscurecer    { from { opacity: 0; } }
-
   @keyframes aclarar      { to   { opacity: 0; } }
-
   @keyframes pop          { 50% { transform: scale(1.12); } }
-
   @keyframes sacudir      { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-
   @keyframes cargando     { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-
   @keyframes destello     { 0% { left: -60%; } 30%, 100% { left: 130%; } }
-
   @keyframes precioCambio { from { opacity: 0; transform: translateY(-6px); } }
-
-
-
   /* Si la persona tiene activado "reducir movimiento" en su celular, se quitan las animaciones */
-
   @media (prefers-reduced-motion: reduce) {
-
     *, *::before, *::after, dialog::backdrop { animation: none !important; transition: none !important; }
-
   }
-
-
-
   /* Barra de desplazamiento: solo visible al moverse */
-
   html { scrollbar-width: thin; scrollbar-color: transparent transparent; transition: scrollbar-color .3s; }
-
   html.moviendo { scrollbar-color: rgba(20,17,15,.35) transparent; }
-
   html::-webkit-scrollbar { width: 8px; }
-
   html::-webkit-scrollbar-track { background: transparent; }
-
   html::-webkit-scrollbar-thumb { background: transparent; border-radius: 999px; }
-
   html.moviendo::-webkit-scrollbar-thumb { background: rgba(20,17,15,.35); }
-
 </style>
-
 </head>
-
 <body>
-
 <div class="top">
-
   <div class="bar">
-
     <div class="brand"><div class="logo"><img src="imgfavicon.png.png" alt="Crisanta" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"></div><div><small>LICORES Y VAPERS</small><b>Crisanta</b></div></div>
-
     <div class="search">🔍<input id="q" placeholder="Buscar producto o sabor…"></div>
-
   </div>
-
   <div class="pills" id="pills"></div>
-
 </div>
-
-
-
 <main>
-
   <div class="head">
-
     <div><h1 id="titulo"></h1><span id="conteo"></span></div>
-
     <select id="orden" class="orden" aria-label="Ordenar productos">
-
       <option value="recomendados">Recomendados</option>
-
       <option value="menor">Menor precio</option>
-
       <option value="mayor">Mayor precio</option>
-
       <option value="az">Nombre: A - Z</option>
-
       <option value="za">Nombre: Z - A</option>
-
     </select>
-
   </div>
-
   <div class="grid" id="grid"></div>
-
-
-
   <div class="vacio" id="vacio">
-
     <div class="vacio-icono">🔍</div>
-
     <h3 id="vacio-titulo"></h3>
-
     <p>Puede que lo tengamos disponible.<br>Escríbenos y te confirmamos.</p>
-
     <a id="vacio-wa" class="wa vacio-btn" target="_blank">Preguntar por WhatsApp</a>
-
   </div>
-
 </main>
-
 <footer>Venta exclusiva para mayores de 18 años</footer>
-
-
-
 <!-- Botón de la lista de consulta -->
-
 <button id="btn-lista" class="btn-lista">🧾 Mi lista <span id="lista-n">0</span></button>
-
-
-
 <!-- Botón volver arriba -->
-
 <button id="arriba" class="arriba" aria-label="Volver arriba">
-
   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c9973f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-
 </button>
-
-
-
 <!-- Botón flotante de WhatsApp -->
-
 <a id="flotante" class="flotante" target="_blank" aria-label="Escríbenos por WhatsApp">
-
   <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/><path d="M16.6 14.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
-
 </a>
-
-
-
 <div class="toast" id="toast"></div>
-
-
-
 <!-- Ventana del producto -->
-
 <dialog id="modal">
-
   <div class="galeria" id="galeria">
-
     <img id="m-img" alt="">
-
     <button class="flecha izq" id="prev" aria-label="Foto anterior">‹</button>
-
     <button class="flecha der" id="next" aria-label="Foto siguiente">›</button>
-
     <button class="cerrar-x" id="m-cerrar" aria-label="Cerrar">✕</button>
-
   </div>
-
   <div class="thumbs" id="m-thumbs"></div>
-
   <div class="m">
-
     <div class="m-tags">
-
       <span class="tag" id="m-etiqueta"></span>
-
       <span class="badge" id="m-garantia">🛡 Garantía incluida</span>
-
     </div>
-
     <h2 id="m-nombre"></h2>
-
     <div id="m-precio"></div>
-
     <p id="m-desc"></p>
-
-
-
     <div id="m-pres-box">
-
       <p class="sec-titulo">Presentación</p>
-
       <div class="opciones" id="m-pres"></div>
-
     </div>
-
-
-
     <div id="m-sabores-box">
-
       <p class="sec-titulo">Sabores disponibles</p>
-
       <p class="ayuda" id="m-ayuda"></p>
-
       <div class="sabores" id="m-sabores"></div>
-
       <div class="sabor-desc" id="m-sabor-desc"></div>
-
     </div>
-
-
-
     <div class="btns">
-
       <button id="m-agregar" class="agregar">➕ Agregar a mi lista</button>
-
       <a id="m-wa" class="wa" target="_blank">💬 Preguntar</a>
-
     </div>
-
-
-
     <div id="m-rel-box">
-
       <p class="sec-titulo">También te puede interesar</p>
-
       <div class="rel" id="m-rel"></div>
-
     </div>
-
   </div>
-
 </dialog>
-
-
-
 <!-- Ventana de la lista de consulta -->
-
 <dialog id="lista-dlg" class="lista-dlg">
-
   <div class="lista-head"><h2>Mi lista</h2><button class="x" id="lista-x" aria-label="Cerrar">✕</button></div>
-
   <div id="lista-items"></div>
-
   <div class="lista-total" id="lista-total"></div>
-
   <p class="lista-nota">Es solo una consulta: te confirmamos disponibilidad y precio por WhatsApp.</p>
-
   <a id="lista-wa" class="wa lista-enviar" target="_blank">Enviar lista por WhatsApp</a>
-
   <button id="lista-vaciar" class="lista-vaciar">Vaciar lista</button>
-
 </dialog>
-
-
-
 <script>
-
   // ✏️ Tu número con indicativo 57, sin + ni espacios
-
   const WHATSAPP = "573244847215";
-
-
-
   // ✏️ Mensaje del botón flotante
-
   const MENSAJE_GENERAL = "Hola, me interesa realizar un pedido";
-
-
-
   // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
-
   const ORDEN = [ "Vapers", "Destilados", "Licores", "Cervezas",];
-
-
-
   // ✏️ Nombre de la sección automática de promociones
-
   const PROMO = "🔥Promociones";
-
-
-
   // ✏️ Etiquetas disponibles y su color
-
   const ETIQUETAS = {
-
     "Nuevo": "#2563eb",
-
     "Más vendido": "#b07d2a",
-
     "Promoción": "#dc2626",
-
     "Agotado": "#6b7280",
-
   };
-
-
-
   // ✏️ Etiquetas que tienen brillo animado
-
   const BRILLAN = ["Promoción", "Nuevo"];
-
-
-
+  // ✏️ Iconos de las etiquetas (se dibujan al lado del texto)
+  const svg = d => `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">${d}</svg>`;
+  const ICONOS = {
+    "Nuevo": svg('<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>'),
+    "Más vendido": svg('<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>'),
+    "Promoción": svg('<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>'),
+    "Agotado": ""
+  };
+  const textoEtiqueta = e => (ICONOS[e] || "") + e;
   // ✏️ Tus productos
-
   //    precio:         número sin puntos ni $  -> precio: 45000
-
   //                    (si no lo pones, sale "Consultar precio")
-
   //    precioAntes:    opcional, precio tachado para promociones
-
   //    presentaciones: opcional, tamaños con su propio precio:
-
   //                    presentaciones: [ { nombre: "375 ml", precio: 35000 },
-
   //                                      { nombre: "750 ml", precio: 65000 } ]
-
   //                    (si lo usas, no hace falta poner "precio")
-
   //    etiqueta:       opcional -> "Nuevo", "Más vendido", "Promoción" o "Agotado"
-
   //    imagen:         una foto  -> imagen: "foto.jpg"
-
   //    imagenes:       varias    -> imagenes: ["foto1.jpg", "foto2.jpg"]
-
   //    sabores:        opcional. Solo el nombre -> "Uva"
-
   //                    o con descripción        -> { nombre: "Mango", desc: "A qué sabe" }
-
   //    garantia:       true -> muestra "Garantía incluida"
-
   const productos = [
-
     { nombre: "Aguardiente", categoria: "Destilados",
-
       etiqueta: "Más vendido",
-
       presentaciones: [
-
         { nombre: "375 ml", precio: 35000 },
-
         { nombre: "750 ml", precio: 65000 },
-
         { nombre: "1 litro", precio: 82000 },
-
       ],
-
       imagen: "aguardiente.jpg", descripcion: "El clásico para reuniones y celebraciones." },
-
-
-
     { nombre: "Ron añejo 750 ml", categoria: "Destilados", precio: 78000, precioAntes: 88000,
-
       etiqueta: "Promoción",
-
       imagen: "ron.jpg", descripcion: "Ron añejado de sabor suave." },
-
-
-
     { nombre: "Crema de whisky 750 ml", categoria: "Licores", precio: 85000, precioAntes: 95000,
-
       etiqueta: "Promoción",
-
       imagen: "crema.jpg", descripcion: "Licor cremoso, perfecto para servir frío." },
-
-
-
     { nombre: "Cerveza", categoria: "Cervezas",
-
       presentaciones: [
-
         { nombre: "Lata x1", precio: 4500 },
-
         { nombre: "Six pack", precio: 24000 },
-
         { nombre: "Caja x24", precio: 90000 },
-
       ],
-
       imagen: "cerveza.jpg", descripcion: "Lata de 330 ml, bien fría." },
-
-
-
     { nombre: "Vaper 5 mil usos", categoria: "Vapers", precio: 45000,
-
       etiqueta: "Nuevo",
-
       imagenes: ["vaper1.jpg", "vaper1-b.jpg", "vaper1-c.jpg"],
-
       descripcion: "Desechable recargable, batería de 500 mAh.",
-
       sabores: [
-
         { nombre: "Mango", desc: "Sabor frutal y dulce, con un toque a pastel de mango." },
-
         { nombre: "Fresa", desc: "Fresa madura con un final cremoso, tipo fresas con crema." },
-
         { nombre: "Sandía", desc: "Refrescante y jugoso, con un toque helado." },
-
         { nombre: "Menta", desc: "Mentolado intenso, sensación fría y limpia." },
-
         "Uva",
-
       ],
-
       garantia: true },
-
-
-
     { nombre: "Vaper 10 mil usos", categoria: "Vapers", precio: 70000,
-
       etiqueta: "Agotado",
-
       imagen: "vaper2.jpg", descripcion: "Batería recargable de 650 mAh con pantalla.",
-
       sabores: ["Blue razz", "Lychee"], garantia: true },
-
     { nombre: "LOST MARY 5 MIL PUFF", categoria: "Vapers", precio: 20000,
-
       imagen: "vaposimg/lostmary1.webp", descripcion: "",
-
       sabores: [], garantia: true },
-
   ];
-
-
-
   // ---------- De aquí para abajo no necesitas tocar nada ----------
-
   const $ = id => document.getElementById(id);
-
   const waLink = texto => `https://wa.me/${WHATSAPP}?text=` + encodeURIComponent(texto);
-
   const normalizar = t => (t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
   const fmt = n => "$" + n.toLocaleString("es-CO");
-
   const reducirMovimiento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-
-
   // Vuelve a ejecutar una animación de CSS en un elemento
-
   const reanimar = (el, clase) => { el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); };
-
-
-
   // Cierra una ventana con animación
-
   function cerrar(dlg) {
-
     if (!dlg.open || dlg.classList.contains("cerrando")) return;
-
     dlg.classList.add("cerrando");
-
     setTimeout(() => { dlg.classList.remove("cerrando"); dlg.close(); }, reducirMovimiento() ? 0 : 200);
-
   }
-
-
-
   // Muestra la foto con efecto cuando termina de cargar
-
   function cargarFoto(img, caja) {
-
     const listo = () => { caja.classList.remove("cargando"); caja.classList.add("lista"); };
-
     if (img.complete) listo();
-
     else { img.addEventListener("load", listo, { once: true }); img.addEventListener("error", listo, { once: true }); }
-
   }
-
-
-
   const fotos = p => (p.imagenes && p.imagenes.length) ? p.imagenes : [p.imagen];
-
   const pres = p => (p.presentaciones && p.presentaciones.length) ? p.presentaciones : null;
-
   const saborNombre = s => typeof s === "string" ? s : s.nombre;
-
   const saborDesc = s => typeof s === "string" ? "" : (s.desc || "");
-
-
-
   const precioMin = p => {
-
     if (pres(p)) {
-
       const v = pres(p).map(x => x.precio).filter(Boolean);
-
       return v.length ? Math.min(...v) : null;
-
     }
-
     return p.precio || null;
-
   };
-
   const precioHTML = (precio, antes) => precio
-
     ? `<div class="precio">${fmt(precio)}${antes ? `<s>${fmt(antes)}</s>` : ''}</div>`
-
     : `<div class="precio consultar">Consultar precio</div>`;
-
   const precioCard = p => {
-
     if (!pres(p)) return precioHTML(p.precio, p.precioAntes);
-
     const m = precioMin(p);
-
     if (!m) return precioHTML(null);
-
     return `<div class="precio">${pres(p).length > 1 ? '<small>Desde</small>' : ''}${fmt(m)}</div>`;
-
   };
-
   const precioTexto = p => {
-
     const m = precioMin(p);
-
     if (!m) return "Consultar precio";
-
     return (pres(p) && pres(p).length > 1 ? "Desde " : "") + fmt(m);
-
   };
-
-
-
   // ----- Secciones, búsqueda y orden -----
-
   const hayPromos = productos.some(p => p.etiqueta === "Promoción");
-
   const extras = [...new Set(productos.map(p => p.categoria))].filter(c => !ORDEN.includes(c));
-
   const cats = ["Todos", ...(hayPromos ? [PROMO] : []),
-
                 ...ORDEN.filter(c => productos.some(p => p.categoria === c)), ...extras];
-
   let actual = "Todos", busqueda = "";
-
-
-
   const enSeccion = (p, c) =>
-
     c === "Todos" ? true : c === PROMO ? p.etiqueta === "Promoción" : p.categoria === c;
-
   const coincide = p =>
-
     normalizar(p.nombre + " " + (p.sabores || []).map(saborNombre).join(" ")).includes(busqueda);
-
-
-
   function ordenar(lista) {
-
     const modo = $("orden").value;
-
     return [...lista].sort((a, b) => {
-
       const agA = a.etiqueta === "Agotado", agB = b.etiqueta === "Agotado";
-
       if (agA !== agB) return agA ? 1 : -1;
-
       if (modo === "menor" || modo === "mayor") {
-
         const pa = precioMin(a), pb = precioMin(b);
-
         if (!pa && !pb) return 0;
-
         if (!pa) return 1;
-
         if (!pb) return -1;
-
         return modo === "menor" ? pa - pb : pb - pa;
-
       }
-
       if (modo === "az") return a.nombre.localeCompare(b.nombre, "es");
-
       if (modo === "za") return b.nombre.localeCompare(a.nombre, "es");
-
       return 0;
-
     });
-
   }
-
-
-
   function pintarPills() {
-
     $("pills").innerHTML = "";
-
     cats.forEach(c => {
-
       const total = productos.filter(p => enSeccion(p, c)).length;
-
       const b = document.createElement("button");
-
       b.className = "pill" + (c === actual ? " on" : "");
-
       b.innerHTML = `${c}<span>${total}</span>`;
-
       b.onclick = () => { actual = c; pintarPills(); pintar(); };
-
       $("pills").appendChild(b);
-
     });
-
   }
-
-
-
   function pintar() {
-
     const lista = ordenar(productos.filter(p => enSeccion(p, actual) && coincide(p)));
-
     $("titulo").textContent =
-
       actual === "Todos" ? "Todos los productos" : actual === PROMO ? "Promociones" : actual;
-
     $("conteo").textContent = lista.length + (lista.length === 1 ? " producto" : " productos");
-
     $("grid").innerHTML = "";
-
-
-
     if (!lista.length) {
-
       const texto = $("q").value.trim();
-
       $("vacio-titulo").textContent = texto ? `No encontramos "${texto}"` : "No hay productos en esta sección";
-
       $("vacio-wa").href = waLink(texto ? `Hola, ¿tienen ${texto}?` : MENSAJE_GENERAL);
-
       $("vacio").style.display = "block";
-
       $("grid").style.display = "none";
-
       return;
-
     }
-
     $("vacio").style.display = "none";
-
     $("grid").style.display = "";
-
-
-
     lista.forEach((p, i) => {
-
       const f = fotos(p);
-
       const agotado = p.etiqueta === "Agotado";
-
       const c = document.createElement("div");
-
       c.className = "card" + (agotado ? " agotado" : "");
-
       c.style.animationDelay = Math.min(i * 60, 480) + "ms";   // una tras otra
-
       c.innerHTML = `<div class="foto cargando"><img src="${f[0]}" alt="${p.nombre}" loading="lazy" decoding="async"></div>
-
-        ${p.etiqueta ? `<span class="etiqueta${BRILLAN.includes(p.etiqueta) ? ' brilla' : ''}" style="background:${ETIQUETAS[p.etiqueta] || '#6b7280'}">${p.etiqueta}</span>` : ''}
-
+        ${p.etiqueta ? `<span class="etiqueta${BRILLAN.includes(p.etiqueta) ? ' brilla' : ''}" style="background:${ETIQUETAS[p.etiqueta] || '#6b7280'}">${textoEtiqueta(p.etiqueta)}</span>` : ''}
         ${f.length > 1 ? `<span class="nfotos">+${f.length - 1}</span>` : ''}
-
         <div class="info"><h3>${p.nombre}</h3>${precioCard(p)}<p>${p.descripcion}</p>
-
         <div class="info-foot">
-
           ${p.garantia ? '<span class="badge">🛡 Garantía incluida</span>' : ''}
-
           ${agotado ? '' : '<button class="mas" aria-label="Agregar a mi lista">+</button>'}
-
         </div></div>`;
-
       cargarFoto(c.querySelector(".foto img"), c.querySelector(".foto"));
-
       c.onclick = () => abrir(p);
-
       const mas = c.querySelector(".mas");
-
       if (mas) mas.onclick = e => {
-
         e.stopPropagation();
-
         // Si tiene tamaños o sabores, se abre la ventana para elegir
-
         if (pres(p) || (p.sabores && p.sabores.length)) abrir(p);
-
         else { agregarItem(p, null, null); toast("Agregado a tu lista ✓"); }
-
       };
-
       $("grid").appendChild(c);
-
     });
-
   }
-
-
-
   // ----- Ventana del producto -----
-
   let sel = { p: null, pres: null, sabor: null, foto: 0 };
-
-
-
   function mostrarFoto(i) {
-
     const f = fotos(sel.p);
-
     sel.foto = (i + f.length) % f.length;
-
     const g = $("galeria"), img = $("m-img");
-
     const lista = () => { g.classList.remove("cargando"); g.classList.add("lista"); };
-
     g.classList.remove("lista");
-
     g.classList.add("cargando");
-
     void img.offsetWidth;
-
     img.onload = img.onerror = lista;
-
     img.src = f[sel.foto];
-
     if (img.complete) requestAnimationFrame(lista);
-
     [...$("m-thumbs").children].forEach((t, k) => t.classList.toggle("on", k === sel.foto));
-
   }
-
-
-
   function textoItem(p, presI, saborI) {
-
     let t = p.nombre;
-
     if (pres(p) && presI !== null) t += ` (${pres(p)[presI].nombre})`;
-
     if (p.sabores && saborI !== null) t += ` sabor ${saborNombre(p.sabores[saborI])}`;
-
     return t;
-
   }
-
-
-
   function actualizarWA() {
-
     const t = textoItem(sel.p, sel.pres, sel.sabor);
-
     $("m-wa").href = waLink(sel.p.etiqueta === "Agotado"
-
       ? `Hola, ¿cuándo vuelve a estar disponible: ${t}?`
-
       : `Hola, me interesa: ${t}`);
-
   }
-
-
-
   function pintarPres() {
-
     const ps = pres(sel.p);
-
     if (!ps) {
-
       $("m-pres-box").style.display = "none";
-
       $("m-precio").innerHTML = precioHTML(sel.p.precio, sel.p.precioAntes);
-
       return;
-
     }
-
     $("m-pres-box").style.display = "block";
-
     $("m-pres").innerHTML = "";
-
     ps.forEach((x, i) => {
-
       const b = document.createElement("button");
-
       b.className = "opcion" + (i === sel.pres ? " on" : "");
-
       b.textContent = x.nombre;
-
       b.onclick = () => {
-
         if (sel.pres === i) return;
-
         sel.pres = i;
-
         pintarPres();
-
         reanimar($("m-precio"), "cambia");   // precio con efecto
-
         actualizarWA();
-
       };
-
       $("m-pres").appendChild(b);
-
     });
-
     const x = ps[sel.pres];
-
     $("m-precio").innerHTML = precioHTML(x.precio, x.precioAntes);
-
   }
-
-
-
   function pintarSabores() {
-
     const ss = sel.p.sabores || [];
-
     if (!ss.length) { $("m-sabores-box").style.display = "none"; return; }
-
     $("m-sabores-box").style.display = "block";
-
     $("m-ayuda").classList.remove("alerta");
-
     $("m-ayuda").textContent = ss.some(saborDesc)
-
       ? "Toca un sabor para ver a qué sabe"
-
       : "Toca un sabor para elegirlo";
-
     $("m-sabores").innerHTML = "";
-
     ss.forEach((s, i) => {
-
       const b = document.createElement("button");
-
       b.className = "sabor" + (i === sel.sabor ? " on" : "");
-
       b.textContent = saborNombre(s);
-
       b.onclick = () => { sel.sabor = (sel.sabor === i ? null : i); pintarSabores(); actualizarWA(); };
-
       $("m-sabores").appendChild(b);
-
     });
-
     const caja = $("m-sabor-desc");
-
     if (sel.sabor !== null && saborDesc(ss[sel.sabor])) {
-
       caja.innerHTML = `<b>${saborNombre(ss[sel.sabor])}:</b> ${saborDesc(ss[sel.sabor])}`;
-
       caja.style.display = "block";
-
       reanimar(caja, "fade");
-
     } else {
-
       caja.style.display = "none";
-
     }
-
   }
-
-
-
   function pintarRel() {
-
     const rel = productos.filter(x => x !== sel.p && x.categoria === sel.p.categoria && x.etiqueta !== "Agotado").slice(0, 3);
-
     if (!rel.length) { $("m-rel-box").style.display = "none"; return; }
-
     $("m-rel-box").style.display = "block";
-
     $("m-rel").innerHTML = "";
-
     rel.forEach(x => {
-
       const d = document.createElement("div");
-
       d.className = "rel-item";
-
       d.innerHTML = `<img src="${fotos(x)[0]}" alt="${x.nombre}" loading="lazy"><div><b>${x.nombre}</b><span>${precioTexto(x)}</span></div>`;
-
       d.onclick = () => abrir(x);
-
       $("m-rel").appendChild(d);
-
     });
-
   }
-
-
-
   function abrir(p) {
-
     const yaAbierta = $("modal").open;
-
     sel = { p, pres: pres(p) ? 0 : null, sabor: null, foto: 0 };
-
     const f = fotos(p);
-
     $("m-thumbs").innerHTML = "";
-
     if (f.length > 1) {
-
       f.forEach((src, i) => {
-
         const t = document.createElement("img");
-
         t.src = src;
-
         t.alt = "";
-
         t.onclick = () => mostrarFoto(i);
-
         $("m-thumbs").appendChild(t);
-
       });
-
     }
-
     $("prev").style.display = $("next").style.display = f.length > 1 ? "grid" : "none";
-
     mostrarFoto(0);
-
-
-
     const et = $("m-etiqueta");
-
     if (p.etiqueta) {
-
-      et.textContent = p.etiqueta;
-
+      et.innerHTML = textoEtiqueta(p.etiqueta);
       et.style.background = ETIQUETAS[p.etiqueta] || "#6b7280";
-
-      et.style.display = "inline-block";
-
+      et.style.display = "inline-flex";
       et.classList.toggle("brilla", BRILLAN.includes(p.etiqueta));
-
     } else {
-
       et.style.display = "none";
-
     }
-
     $("m-garantia").style.display = p.garantia ? "inline-block" : "none";
-
     $("m-nombre").textContent = p.nombre;
-
     $("m-desc").textContent = p.descripcion;
-
-
-
     pintarPres();
-
     pintarSabores();
-
-
-
     const agotado = p.etiqueta === "Agotado";
-
     const b = $("m-agregar");
-
     b.disabled = agotado;
-
     b.classList.remove("ok");
-
     b.textContent = agotado ? "Agotado" : "➕ Agregar a mi lista";
-
-
-
     actualizarWA();
-
     pintarRel();
-
     if (yaAbierta) reanimar($("modal"), "cambio");    // al cambiar desde "También te puede interesar"
-
     else { $("modal").classList.remove("cambio"); $("modal").showModal(); }
-
     $("modal").scrollTop = 0;
-
   }
-
-
-
   // Deslizar fotos con el dedo
-
   let x0 = null;
-
   $("galeria").addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
-
   $("galeria").addEventListener("touchend", e => {
-
     if (x0 === null) return;
-
     const dx = e.changedTouches[0].clientX - x0;
-
     if (Math.abs(dx) > 40 && fotos(sel.p).length > 1) mostrarFoto(sel.foto + (dx < 0 ? 1 : -1));
-
     x0 = null;
-
   });
-
   $("prev").onclick = () => mostrarFoto(sel.foto - 1);
-
   $("next").onclick = () => mostrarFoto(sel.foto + 1);
-
   $("m-cerrar").onclick = () => cerrar($("modal"));
-
-
-
   $("m-agregar").onclick = () => {
-
     const p = sel.p;
-
     if (p.sabores && p.sabores.length && sel.sabor === null) {
-
       $("m-ayuda").textContent = "Elige un sabor para agregarlo a tu lista";
-
       reanimar($("m-ayuda"), "alerta");
-
       return;
-
     }
-
     agregarItem(p, sel.pres, sel.sabor);
-
     const b = $("m-agregar");
-
     b.textContent = "✓ Agregado a tu lista";
-
     b.classList.add("ok");
-
     setTimeout(() => { b.textContent = "➕ Agregar a mi lista"; b.classList.remove("ok"); }, 1500);
-
   };
-
-
-
   // ----- Lista de consulta (se guarda en el celular del cliente) -----
-
   let lista = [];
-
   try { lista = JSON.parse(localStorage.getItem("crisanta-lista")) || []; } catch (e) {}
-
   const guardar = () => { try { localStorage.setItem("crisanta-lista", JSON.stringify(lista)); } catch (e) {} };
-
-
-
   function agregarItem(p, presI, saborI) {
-
     const texto = textoItem(p, presI, saborI);
-
     const precio = pres(p) ? pres(p)[presI].precio : p.precio;
-
     const existe = lista.find(i => i.texto === texto);
-
     if (existe) existe.cantidad++;
-
     else lista.push({ texto, precio: precio || null, cantidad: 1 });
-
     guardar();
-
     pintarLista();
-
     reanimar($("btn-lista"), "pop");
-
   }
-
-
-
   function pintarLista() {
-
     const n = lista.reduce((s, i) => s + i.cantidad, 0);
-
     $("lista-n").textContent = n;
-
     $("btn-lista").style.display = n ? "flex" : "none";
-
-
-
     $("lista-items").innerHTML = lista.map((i, k) => `
-
       <div class="item">
-
         <div class="item-info"><b>${i.texto}</b><span>${i.precio ? fmt(i.precio) : "Consultar precio"}</span></div>
-
         <div class="cant">
-
           <button data-a="menos" data-i="${k}" aria-label="Quitar uno">−</button>
-
           <span>${i.cantidad}</span>
-
           <button data-a="mas" data-i="${k}" aria-label="Agregar uno">+</button>
-
         </div>
-
       </div>`).join("");
-
-
-
     const total = lista.reduce((s, i) => s + (i.precio ? i.precio * i.cantidad : 0), 0);
-
     $("lista-total").innerHTML = total ? `<span>Total aproximado</span><span>${fmt(total)}</span>` : "";
-
-
-
     const lineas = lista.map(i => `• ${i.cantidad} x ${i.texto}${i.precio ? ` - ${fmt(i.precio * i.cantidad)}` : ""}`);
-
     $("lista-wa").href = waLink(`Hola, me interesan estos productos:\n${lineas.join("\n")}` +
-
       (total ? `\n\nTotal aproximado: ${fmt(total)}` : ""));
-
-
-
     if (!n && $("lista-dlg").open) cerrar($("lista-dlg"));
-
   }
-
-
-
   $("lista-items").onclick = e => {
-
     const b = e.target.closest("button");
-
     if (!b) return;
-
     const k = +b.dataset.i;
-
     if (b.dataset.a === "mas") lista[k].cantidad++;
-
     else if (--lista[k].cantidad <= 0) lista.splice(k, 1);
-
     guardar();
-
     pintarLista();
-
   };
-
   $("btn-lista").onclick = () => { pintarLista(); $("lista-dlg").showModal(); };
-
   $("lista-x").onclick = () => cerrar($("lista-dlg"));
-
   $("lista-vaciar").onclick = () => { lista = []; guardar(); pintarLista(); };
-
-
-
   // ----- Varios -----
-
   let tt;
-
   function toast(t) {
-
     $("toast").textContent = t;
-
     $("toast").classList.add("ver");
-
     clearTimeout(tt);
-
     tt = setTimeout(() => $("toast").classList.remove("ver"), 1800);
-
   }
-
-
-
   window.addEventListener("scroll", () => {
-
     $("arriba").classList.toggle("ver", window.scrollY > 400);
-
   });
-
   $("arriba").onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
-
-
   // Mostrar la barra de desplazamiento solo mientras se mueve
-
   let quieto;
-
   window.addEventListener("scroll", () => {
-
     document.documentElement.classList.add("moviendo");
-
     clearTimeout(quieto);
-
     quieto = setTimeout(() => document.documentElement.classList.remove("moviendo"), 1000);
-
   });
-
-
-
   // Cerrar ventanas tocando afuera o con la tecla Esc (con animación)
-
   ["modal", "lista-dlg"].forEach(id => {
-
     $(id).onclick = e => { if (e.target.id === id) cerrar($(id)); };
-
     $(id).addEventListener("cancel", e => { e.preventDefault(); cerrar($(id)); });
-
   });
-
-
-
   $("flotante").href = waLink(MENSAJE_GENERAL);
-
   $("orden").onchange = pintar;
-
   $("q").oninput = e => { busqueda = normalizar(e.target.value.trim()); pintar(); };
-
   pintarPills(); pintar(); pintarLista();
-
 </script>
-
 </body>
-
-</html> 
+</html>
