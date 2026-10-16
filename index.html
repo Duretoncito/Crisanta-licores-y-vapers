@@ -27,34 +27,23 @@
   body { margin: 0; font-family: 'Inter', sans-serif; background: var(--fondo); color: #1c1714; }
 
   /* Encabezado */
-  .top { background: var(--oscuro); position: sticky; top: 0; z-index: 10; transition: box-shadow .25s; }
-  .bar { max-width: 1100px; margin: auto; padding: 14px 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; transition: padding .25s, gap .25s; }
+  .top { background: var(--oscuro); position: sticky; top: 0; z-index: 10; }
+  .bar { max-width: 1100px; margin: auto; padding: 14px 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
   .brand { display: flex; gap: 12px; align-items: center; flex: 1; min-width: 200px; }
-  .logo { width: 44px; height: 44px; border-radius: 12px; background: var(--dorado); display: grid; place-items: center; color: var(--oscuro); font-size: 22px;
-          flex-shrink: 0; transition: width .25s, height .25s; }
-  .brand small { display: block; font-size: 11px; letter-spacing: .15em; color: var(--dorado-suave); max-height: 16px; overflow: hidden; transition: max-height .25s, opacity .25s; }
-  .brand b { color: #fff; font-size: 18px; transition: font-size .25s; }
+  .logo { width: 44px; height: 44px; border-radius: 12px; background: var(--dorado); display: grid; place-items: center; color: var(--oscuro); font-size: 22px; flex-shrink: 0; }
+  .brand small { display: block; font-size: 11px; letter-spacing: .15em; color: var(--dorado-suave); }
+  .brand b { color: #fff; font-size: 18px; }
   .search { flex: 1; min-width: 220px; display: flex; align-items: center; gap: 8px; background: var(--oscuro-2);
-            border: 1px solid var(--borde-oscuro); border-radius: 12px; padding: 0 14px; height: 42px; transition: border-color .2s, height .25s; }
+            border: 1px solid var(--borde-oscuro); border-radius: 12px; padding: 0 14px; height: 42px; transition: border-color .2s; }
   .search:focus-within { border-color: var(--dorado); }
   .search input { background: none; border: none; outline: none; color: #fff; flex: 1; font: inherit; }
-  .pills { max-width: 1100px; margin: auto; padding: 10px 16px 14px; display: flex; gap: 8px; flex-wrap: wrap; transition: padding .25s; }
+  .pills { max-width: 1100px; margin: auto; padding: 10px 16px 14px; display: flex; gap: 8px; flex-wrap: wrap; }
   .pill { border-radius: 999px; padding: 8px 16px; font: 500 14px 'Inter'; border: 1px solid var(--borde-oscuro);
           background: none; color: #d6cbbf; cursor: pointer; display: flex; gap: 8px; align-items: center;
-          transition: background .25s, color .25s, border-color .25s, transform .1s, padding .25s, font-size .25s; }
+          transition: background .25s, color .25s, border-color .25s, transform .1s; }
   .pill.on { background: var(--dorado); color: var(--oscuro); border-color: var(--dorado); }
   .pill span { font-size: 11px; background: rgba(255,255,255,.15); padding: 2px 8px; border-radius: 999px; }
   .pill.on span { background: rgba(0,0,0,.15); }
-
-  /* Encabezado compacto al bajar */
-  .top.compacto { box-shadow: 0 4px 14px rgba(0,0,0,.25); }
-  .top.compacto .bar { padding: 8px 16px; gap: 10px; }
-  .top.compacto .logo { width: 34px; height: 34px; }
-  .top.compacto .brand small { max-height: 0; opacity: 0; }
-  .top.compacto .brand b { font-size: 16px; }
-  .top.compacto .search { height: 36px; }
-  .top.compacto .pills { padding: 4px 16px 8px; }
-  .top.compacto .pill { padding: 6px 13px; font-size: 13px; }
 
   main { max-width: 1100px; margin: auto; padding: 24px 16px; }
   .head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
@@ -231,7 +220,7 @@
 </style>
 </head>
 <body>
-<div class="top" id="top">
+<div class="top">
   <div class="bar">
     <div class="brand"><div class="logo"><img src="imgfavicon.png.png" alt="Crisanta" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"></div><div><small>LICORES Y VAPERS</small><b>Crisanta</b></div></div>
     <div class="search">🔍<input id="q" placeholder="Buscar producto o sabor…"></div>
@@ -786,15 +775,6 @@
     $("arriba").classList.toggle("ver", window.scrollY > 400);
   });
   $("arriba").onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
-  // Encabezado compacto: se encoge al bajar y vuelve al subir
-  let ultimaY = 0;
-  window.addEventListener("scroll", () => {
-    const y = window.scrollY;
-    if (y > ultimaY + 6 && y > 140) $("top").classList.add("compacto");
-    else if (y < ultimaY - 6 || y < 60) $("top").classList.remove("compacto");
-    ultimaY = y;
-  }, { passive: true });
 
   // Mostrar la barra de desplazamiento solo mientras se mueve
   let quieto;
