@@ -12,54 +12,76 @@
 <meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+  /* ✏️ Colores de la página: cambia estos y se actualiza todo */
+  :root {
+    --oscuro: #14110f;        /* fondo del encabezado */
+    --oscuro-2: #1f1a16;      /* fondo del buscador */
+    --borde-oscuro: #3b3129;  /* bordes del encabezado */
+    --dorado: #c9973f;        /* color principal (acento) */
+    --dorado-oscuro: #8a6420; /* acento para textos */
+    --dorado-suave: #b59a74;  /* textos pequeños del encabezado */
+    --fondo: #f7f4ef;         /* fondo de la página */
+  }
+
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: 'Inter', sans-serif; background: #f4f6fa; color: #0f172a; }
-  .top { background: #0b1324; position: sticky; top: 0; z-index: 10; }
+  body { margin: 0; font-family: 'Inter', sans-serif; background: var(--fondo); color: #1c1714; }
+  .top { background: var(--oscuro); position: sticky; top: 0; z-index: 10; }
   .bar { max-width: 1100px; margin: auto; padding: 14px 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
   .brand { display: flex; gap: 12px; align-items: center; flex: 1; min-width: 200px; }
-  .logo { width: 44px; height: 44px; border-radius: 12px; background: #2563eb; display: grid; place-items: center; color: #fff; font-size: 22px; }
-  .brand small { display: block; font-size: 11px; letter-spacing: .15em; color: #7b8db0; }
+  .logo { width: 44px; height: 44px; border-radius: 12px; background: var(--dorado); display: grid; place-items: center; color: var(--oscuro); font-size: 22px; }
+  .brand small { display: block; font-size: 11px; letter-spacing: .15em; color: var(--dorado-suave); }
   .brand b { color: #fff; font-size: 18px; }
-  .search { flex: 1; min-width: 220px; display: flex; align-items: center; gap: 8px; background: #141f36;
-            border: 1px solid #2a3a55; border-radius: 12px; padding: 0 14px; height: 42px; }
+  .search { flex: 1; min-width: 220px; display: flex; align-items: center; gap: 8px; background: var(--oscuro-2);
+            border: 1px solid var(--borde-oscuro); border-radius: 12px; padding: 0 14px; height: 42px; }
   .search input { background: none; border: none; outline: none; color: #fff; flex: 1; font: inherit; }
   .pills { max-width: 1100px; margin: auto; padding: 10px 16px 14px; display: flex; gap: 8px; flex-wrap: wrap; }
-  .pill { border-radius: 999px; padding: 8px 16px; font: 500 14px 'Inter'; border: 1px solid #2a3a55;
-          background: none; color: #cbd5e1; cursor: pointer; display: flex; gap: 8px; align-items: center; }
-  .pill.on { background: #fff; color: #0f172a; border-color: #fff; }
-  .pill span { font-size: 11px; background: rgba(148,163,184,.25); padding: 2px 8px; border-radius: 999px; }
+  .pill { border-radius: 999px; padding: 8px 16px; font: 500 14px 'Inter'; border: 1px solid var(--borde-oscuro);
+          background: none; color: #d6cbbf; cursor: pointer; display: flex; gap: 8px; align-items: center; }
+  .pill.on { background: var(--dorado); color: var(--oscuro); border-color: var(--dorado); }
+  .pill span { font-size: 11px; background: rgba(255,255,255,.15); padding: 2px 8px; border-radius: 999px; }
+  .pill.on span { background: rgba(0,0,0,.15); }
   main { max-width: 1100px; margin: auto; padding: 24px 16px; }
   .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; }
   .head h1 { margin: 0; font-size: 26px; }
-  .head span { color: #64748b; font-size: 14px; }
+  .head span { color: #7c6f64; font-size: 14px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
-  .card { background: #fff; border-radius: 18px; overflow: hidden; cursor: pointer; border: 1px solid #e5e9f0; transition: transform .2s; position: relative; }
+  .card { background: #fff; border-radius: 18px; overflow: hidden; cursor: pointer; border: 1px solid #ebe5dc; transition: transform .2s; position: relative; }
   .card:hover { transform: translateY(-3px); }
   .card img { width: 100%; height: 220px; object-fit: contain; background: #fff; padding: 10px; }
-  .nfotos { position: absolute; top: 10px; right: 10px; background: rgba(15,23,42,.75); color: #fff; font-size: 12px; font-weight: 500; padding: 3px 9px; border-radius: 999px; }
+  .card.agotado img { opacity: .45; filter: grayscale(1); }
+  .etiqueta { position: absolute; top: 10px; left: 10px; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+  .nfotos { position: absolute; top: 10px; right: 10px; background: rgba(20,17,15,.75); color: #fff; font-size: 12px; font-weight: 500; padding: 3px 9px; border-radius: 999px; }
   .info { padding: 14px 16px 16px; }
-  .info h3 { margin: 0 0 6px; font-size: 16px; text-transform: uppercase; }
-  .info p { margin: 0 0 12px; font-size: 14px; color: #64748b; line-height: 1.5;
+  .info h3 { margin: 0 0 4px; font-size: 16px; text-transform: uppercase; }
+  .info p { margin: 0 0 12px; font-size: 14px; color: #6b6058; line-height: 1.5;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .precio { font-size: 19px; font-weight: 700; color: var(--oscuro); margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .precio s { font-size: 13px; font-weight: 400; color: #9c9087; }
+  .precio.consultar { font-size: 14px; font-weight: 600; color: var(--dorado-oscuro); }
   .badge { font-size: 12px; background: #e7f6ee; color: #15803d; padding: 4px 12px; border-radius: 999px; }
-  .sabores-titulo { font-weight: 700; font-size: 14px; margin: 16px 0 8px; color: #0f172a !important; }
+  .tag { color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+  .m-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .sabores-titulo { font-weight: 700; font-size: 14px; margin: 16px 0 8px; color: #1c1714 !important; }
   .sabores { display: flex; flex-wrap: wrap; gap: 6px; }
-  .sabor { font-size: 13px; background: #eef2ff; color: #3730a3; padding: 5px 12px; border-radius: 999px; }
+  .sabor { font-size: 13px; background: #f6ecd9; color: #7a5418; padding: 5px 12px; border-radius: 999px; }
   dialog { border: none; border-radius: 18px; padding: 0; max-width: 420px; width: 92%; }
   dialog::backdrop { background: rgba(0,0,0,.55); }
   #m-img { width: 100%; height: 280px; object-fit: contain; padding: 10px; }
   .thumbs { display: flex; gap: 8px; padding: 0 20px; overflow-x: auto; }
   .thumbs img { width: 58px; height: 58px; flex-shrink: 0; object-fit: contain; padding: 4px;
-                border: 2px solid #e5e9f0; border-radius: 10px; cursor: pointer; background: #fff; }
-  .thumbs img.on { border-color: #2563eb; }
+                border: 2px solid #ebe5dc; border-radius: 10px; cursor: pointer; background: #fff; }
+  .thumbs img.on { border-color: var(--dorado); }
   .m { padding: 16px 20px 20px; }
-  .m h2 { margin: 0 0 8px; text-transform: uppercase; font-size: 20px; }
-  .m p { color: #475569; line-height: 1.6; }
+  .m h2 { margin: 0 0 4px; text-transform: uppercase; font-size: 20px; }
+  .m p { color: #5c524b; line-height: 1.6; }
   .btns { display: flex; gap: 10px; margin-top: 16px; }
   .btns a, .btns button { flex: 1; padding: 11px; border-radius: 10px; font: 500 14px 'Inter'; text-align: center; cursor: pointer; text-decoration: none; }
   .wa { background: #22c55e; color: #fff; border: none; }
-  .close { background: #fff; border: 1px solid #cbd5e1; color: #0f172a; }
-  footer { text-align: center; font-size: 13px; color: #94a3b8; padding: 10px 0 30px; }
+  .close { background: #fff; border: 1px solid #d6cdc2; color: #1c1714; }
+  .flotante { position: fixed; right: 18px; bottom: 18px; width: 58px; height: 58px; border-radius: 50%; background: #25d366;
+              display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0,0,0,.25); z-index: 20; transition: transform .2s; }
+  .flotante:hover { transform: scale(1.08); }
+  footer { text-align: center; font-size: 13px; color: #9c9087; padding: 10px 0 90px; }
 </style>
 </head>
 <body>
@@ -77,12 +99,21 @@
 </main>
 <footer>Venta exclusiva para mayores de 18 años</footer>
 
+<!-- Botón flotante de WhatsApp -->
+<a id="flotante" class="flotante" target="_blank" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/><path d="M16.6 14.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
+</a>
+
 <dialog id="modal">
   <img id="m-img" alt="">
   <div class="thumbs" id="m-thumbs"></div>
   <div class="m">
+    <div class="m-tags">
+      <span class="tag" id="m-etiqueta"></span>
+      <span class="badge" id="m-garantia">🛡 Garantía incluida</span>
+    </div>
     <h2 id="m-nombre"></h2>
-    <span class="badge" id="m-garantia">🛡 Garantía incluida</span>
+    <div id="m-precio"></div>
     <p id="m-desc"></p>
     <div id="m-sabores-box">
       <p class="sabores-titulo">Sabores disponibles</p>
@@ -99,31 +130,58 @@
   // ✏️ Tu número con indicativo 57, sin + ni espacios
   const WHATSAPP = "573001234567";
 
+  // ✏️ Mensaje del botón flotante
+  const MENSAJE_GENERAL = "Hola, vi el catálogo de Crisanta y quiero hacer una consulta";
+
   // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
   const ORDEN = ["Destilados", "Licores", "Cervezas", "Vapers"];
 
+  // ✏️ Etiquetas disponibles y su color
+  const ETIQUETAS = {
+    "Nuevo": "#2563eb",
+    "Más vendido": "#b07d2a",
+    "Promoción": "#dc2626",
+    "Agotado": "#6b7280",
+  };
+
   // ✏️ Tus productos
-  //    imagen:   una sola foto       -> imagen: "foto.jpg"
-  //    imagenes: varias fotos        -> imagenes: ["foto1.jpg", "foto2.jpg"]
-  //    sabores:  opcional
-  //    garantia: true -> muestra "Garantía incluida"
+  //    precio:      número sin puntos ni $   -> precio: 45000
+  //                 (si no lo pones, sale "Consultar precio")
+  //    precioAntes: opcional, precio tachado para promociones
+  //    etiqueta:    opcional -> "Nuevo", "Más vendido", "Promoción" o "Agotado"
+  //    imagen:      una foto  -> imagen: "foto.jpg"
+  //    imagenes:    varias    -> imagenes: ["foto1.jpg", "foto2.jpg"]
+  //    sabores:     opcional
+  //    garantia:    true -> muestra "Garantía incluida"
   const productos = [
-    { nombre: "Aguardiente 750 ml", categoria: "Destilados",
-      imagen: "aguardiente.jpg", descripcion: "Descripción del aguardiente." },
+    { nombre: "Aguardiente 750 ml", categoria: "Destilados", precio: 65000,
+      etiqueta: "Más vendido",
+      imagen: "aguardiente.jpg", descripcion: "Botella de 750 ml, ideal para reuniones." },
 
-    { nombre: "Crema de whisky 750 ml", categoria: "Licores",
-      imagen: "crema.jpg", descripcion: "Descripción del licor." },
+    { nombre: "Crema de whisky 750 ml", categoria: "Licores", precio: 85000, precioAntes: 95000,
+      etiqueta: "Promoción",
+      imagen: "crema.jpg", descripcion: "Licor cremoso, perfecto para servir frío." },
 
-    { nombre: "Cerveza six pack", categoria: "Cervezas",
+    { nombre: "Cerveza six pack", categoria: "Cervezas", precio: 24000,
       imagen: "cerveza.jpg", descripcion: "Six pack de latas de 330 ml." },
 
-    { nombre: "Vaper 5 mil usos", categoria: "Vapers",
+    { nombre: "Vaper 5 mil usos", categoria: "Vapers", precio: 45000,
+      etiqueta: "Nuevo",
       imagenes: ["vaper1.jpg", "vaper1-b.jpg", "vaper1-c.jpg"],
       descripcion: "Desechable recargable, batería de 500 mAh.",
       sabores: ["Mango", "Fresa", "Uva", "Sandía", "Menta"], garantia: true },
+
+    { nombre: "Vaper 10 mil usos", categoria: "Vapers", precio: 70000,
+      etiqueta: "Agotado",
+      imagen: "vaper2.jpg", descripcion: "Batería recargable de 650 mAh con pantalla.",
+      sabores: ["Blue razz", "Lychee"], garantia: true },
   ];
 
   // ---------- De aquí para abajo no necesitas tocar nada ----------
+  const fmt = n => "$" + n.toLocaleString("es-CO");
+  const precioHTML = p => p.precio
+    ? `<div class="precio">${fmt(p.precio)}${p.precioAntes ? `<s>${fmt(p.precioAntes)}</s>` : ''}</div>`
+    : `<div class="precio consultar">Consultar precio</div>`;
   const fotos = p => (p.imagenes && p.imagenes.length) ? p.imagenes : [p.imagen];
   const extras = [...new Set(productos.map(p => p.categoria))].filter(c => !ORDEN.includes(c));
   const cats = ["Todos", ...ORDEN.filter(c => productos.some(p => p.categoria === c)), ...extras];
@@ -152,10 +210,11 @@
     lista.forEach(p => {
       const f = fotos(p);
       const c = document.createElement("div");
-      c.className = "card";
+      c.className = "card" + (p.etiqueta === "Agotado" ? " agotado" : "");
       c.innerHTML = `<img src="${f[0]}" alt="${p.nombre}">
+        ${p.etiqueta ? `<span class="etiqueta" style="background:${ETIQUETAS[p.etiqueta] || '#6b7280'}">${p.etiqueta}</span>` : ''}
         ${f.length > 1 ? `<span class="nfotos">+${f.length - 1}</span>` : ''}
-        <div class="info"><h3>${p.nombre}</h3><p>${p.descripcion}</p>
+        <div class="info"><h3>${p.nombre}</h3>${precioHTML(p)}<p>${p.descripcion}</p>
         ${p.garantia ? '<span class="badge">🛡 Garantía incluida</span>' : ''}</div>`;
       c.onclick = () => abrir(p);
       $("grid").appendChild(c);
@@ -179,9 +238,18 @@
         $("m-thumbs").appendChild(t);
       });
     }
-    $("m-nombre").textContent = p.nombre;
-    $("m-desc").textContent = p.descripcion;
+    const et = $("m-etiqueta");
+    if (p.etiqueta) {
+      et.textContent = p.etiqueta;
+      et.style.background = ETIQUETAS[p.etiqueta] || "#6b7280";
+      et.style.display = "inline-block";
+    } else {
+      et.style.display = "none";
+    }
     $("m-garantia").style.display = p.garantia ? "inline-block" : "none";
+    $("m-nombre").textContent = p.nombre;
+    $("m-precio").innerHTML = precioHTML(p);
+    $("m-desc").textContent = p.descripcion;
     if (p.sabores && p.sabores.length) {
       $("m-sabores").innerHTML = p.sabores.map(s => `<span class="sabor">${s}</span>`).join("");
       $("m-sabores-box").style.display = "block";
@@ -193,6 +261,7 @@
     $("modal").showModal();
   }
 
+  $("flotante").href = `https://wa.me/${WHATSAPP}?text=` + encodeURIComponent(MENSAJE_GENERAL);
   $("q").oninput = e => { busqueda = e.target.value.toLowerCase(); pintar(); };
   $("modal").onclick = e => { if (e.target.id === "modal") $("modal").close(); };
   pintarPills(); pintar();
