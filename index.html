@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Crisanta licores y vapers</title>
- <link rel="icon" type="image/png" href="imgfavicon.png.png">
- <meta property="og:title" content="Catálogo - Crisanta">
+<link rel="icon" type="image/png" href="imgfavicon.png.png">
+<meta property="og:title" content="Catálogo - Crisanta">
 <meta property="og:description" content="Licores y vapers">
 <meta property="og:image" content="https://TUUSUARIO.github.io/TUREPOSITORIO/imgfavicon.png.png">
 <meta property="og:type" content="website">
@@ -41,6 +41,9 @@
   .info p { margin: 0 0 12px; font-size: 14px; color: #64748b; line-height: 1.5;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .badge { font-size: 12px; background: #e7f6ee; color: #15803d; padding: 4px 12px; border-radius: 999px; }
+  .sabores-titulo { font-weight: 700; font-size: 14px; margin: 16px 0 8px; color: #0f172a !important; }
+  .sabores { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sabor { font-size: 13px; background: #eef2ff; color: #3730a3; padding: 5px 12px; border-radius: 999px; }
   dialog { border: none; border-radius: 18px; padding: 0; max-width: 420px; width: 92%; }
   dialog::backdrop { background: rgba(0,0,0,.55); }
   dialog img { width: 100%; max-height: 300px; object-fit: contain; padding: 10px; }
@@ -57,7 +60,7 @@
 <body>
 <div class="top">
   <div class="bar">
-   <div class="brand"><div class="logo"><img src="imgfavicon.png.png" alt="Crisanta" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"></div><div><small>LICORES Y VAPERS</small><b>Crisanta</b></div></div>
+    <div class="brand"><div class="logo"><img src="imgfavicon.png.png" alt="Crisanta" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"></div><div><small>LICORES Y VAPERS</small><b>Crisanta</b></div></div>
     <div class="search">🔍<input id="q" placeholder="Buscar producto…"></div>
   </div>
   <div class="pills" id="pills"></div>
@@ -73,8 +76,12 @@
   <img id="m-img" alt="">
   <div class="m">
     <h2 id="m-nombre"></h2>
-    <span class="badge">🛡 Garantía incluida</span>
+    <span class="badge" id="m-garantia">🛡 Garantía incluida</span>
     <p id="m-desc"></p>
+    <div id="m-sabores-box">
+      <p class="sabores-titulo">Sabores disponibles</p>
+      <div class="sabores" id="m-sabores"></div>
+    </div>
     <div class="btns">
       <a id="m-wa" class="wa" target="_blank">Preguntar por WhatsApp</a>
       <button class="close" onclick="modal.close()">Cerrar</button>
@@ -83,36 +90,60 @@
 </dialog>
 
 <script>
-  // ✏️ Tu número con indicativo, sin + ni espacios
+  // ✏️ Tu número con indicativo 57, sin + ni espacios
   const WHATSAPP = "573001234567";
 
+  // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
+  const ORDEN = ["Destilados", "Licores", "Cervezas", "Vapers"];
+
   // ✏️ Tus productos
+  //    sabores: opcional, solo si el producto tiene sabores
+  //    garantia: true  -> muestra la etiqueta "Garantía incluida"
   const productos = [
-    { nombre: "Producto 5 mil usos", categoria: "Catálogo mayorista con garantía",
-      imagen: "img/producto1.jpg", descripcion: "Descripción del producto 1." },
-    { nombre: "Producto 10 mil usos", categoria: "Catálogo mayorista con garantía",
-      imagen: "img/producto2.jpg", descripcion: "Descripción del producto 2." },
+    { nombre: "Aguardiente 750 ml", categoria: "Destilados",
+      imagen: "aguardiente.jpg", descripcion: "Descripción del aguardiente." },
+
+    { nombre: "Ron añejo 750 ml", categoria: "Destilados",
+      imagen: "ron.jpg", descripcion: "Descripción del ron." },
+
+    { nombre: "Crema de whisky 750 ml", categoria: "Licores",
+      imagen: "crema.jpg", descripcion: "Descripción del licor." },
+
+    { nombre: "Cerveza six pack", categoria: "Cervezas",
+      imagen: "cerveza.jpg", descripcion: "Six pack de latas de 330 ml." },
+
+    { nombre: "Vaper 5 mil usos", categoria: "Vapers",
+      imagen: "vaper1.jpg", descripcion: "Desechable recargable, batería de 500 mAh.",
+      sabores: ["Mango", "Fresa", "Uva", "Sandía", "Menta"], garantia: true },
+
+    { nombre: "Vaper 10 mil usos", categoria: "Vapers",
+      imagen: "vaper2.jpg", descripcion: "Batería recargable de 650 mAh con pantalla.",
+      sabores: ["Blue razz", "Lychee", "Piña colada"], garantia: true },
   ];
 
-  const cats = [...new Set(productos.map(p => p.categoria))];
-  let actual = cats[0], busqueda = "";
+  // ---------- De aquí para abajo no necesitas tocar nada ----------
+  const extras = [...new Set(productos.map(p => p.categoria))].filter(c => !ORDEN.includes(c));
+  const cats = ["Todos", ...ORDEN.filter(c => productos.some(p => p.categoria === c)), ...extras];
+  let actual = "Todos", busqueda = "";
   const $ = id => document.getElementById(id);
 
   function pintarPills() {
     $("pills").innerHTML = "";
     cats.forEach(c => {
+      const total = c === "Todos" ? productos.length : productos.filter(p => p.categoria === c).length;
       const b = document.createElement("button");
       b.className = "pill" + (c === actual ? " on" : "");
-      b.innerHTML = `${c}<span>${productos.filter(p => p.categoria === c).length}</span>`;
+      b.innerHTML = `${c}<span>${total}</span>`;
       b.onclick = () => { actual = c; pintarPills(); pintar(); };
       $("pills").appendChild(b);
     });
   }
 
   function pintar() {
-    const lista = productos.filter(p => p.categoria === actual &&
+    const lista = productos.filter(p =>
+      (actual === "Todos" || p.categoria === actual) &&
       p.nombre.toLowerCase().includes(busqueda));
-    $("titulo").textContent = actual;
+    $("titulo").textContent = actual === "Todos" ? "Todos los productos" : actual;
     $("conteo").textContent = lista.length + (lista.length === 1 ? " producto" : " productos");
     $("grid").innerHTML = "";
     lista.forEach(p => {
@@ -120,7 +151,7 @@
       c.className = "card";
       c.innerHTML = `<img src="${p.imagen}" alt="${p.nombre}">
         <div class="info"><h3>${p.nombre}</h3><p>${p.descripcion}</p>
-        <span class="badge">🛡 Garantía incluida</span></div>`;
+        ${p.garantia ? '<span class="badge">🛡 Garantía incluida</span>' : ''}</div>`;
       c.onclick = () => abrir(p);
       $("grid").appendChild(c);
     });
@@ -130,6 +161,13 @@
     $("m-img").src = p.imagen;
     $("m-nombre").textContent = p.nombre;
     $("m-desc").textContent = p.descripcion;
+    $("m-garantia").style.display = p.garantia ? "inline-block" : "none";
+    if (p.sabores && p.sabores.length) {
+      $("m-sabores").innerHTML = p.sabores.map(s => `<span class="sabor">${s}</span>`).join("");
+      $("m-sabores-box").style.display = "block";
+    } else {
+      $("m-sabores-box").style.display = "none";
+    }
     $("m-wa").href = `https://wa.me/${WHATSAPP}?text=` +
       encodeURIComponent(`Hola, me interesa el producto: ${p.nombre}`);
     $("modal").showModal();
