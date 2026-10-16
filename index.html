@@ -10,7 +10,7 @@
 <meta property="og:description" content="Licores y vapers">
 <meta property="og:image" content="https://TUUSUARIO.github.io/TUREPOSITORIO/imgfavicon.png.png">
 <meta property="og:type" content="website">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ✏️ Colores de la página: cambia estos y se actualiza todo */
   :root {
@@ -58,23 +58,35 @@
   .info h3 { margin: 0 0 4px; font-size: 16px; text-transform: uppercase; }
   .info p { margin: 0 0 12px; font-size: 14px; color: #6b6058; line-height: 1.5;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .info-foot { display: flex; align-items: center; gap: 8px; min-height: 36px; }
+  .mas { margin-left: auto; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--oscuro);
+         color: var(--dorado); font-size: 22px; line-height: 1; cursor: pointer; flex-shrink: 0; }
+  .mas:hover { background: var(--oscuro-2); }
   .precio { font-size: 19px; font-weight: 700; color: var(--oscuro); margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .precio small { font-size: 12px; font-weight: 500; color: #7c6f64; }
   .precio s { font-size: 13px; font-weight: 400; color: #9c9087; }
   .precio.consultar { font-size: 14px; font-weight: 600; color: var(--dorado-oscuro); }
   .badge { font-size: 12px; background: #e7f6ee; color: #15803d; padding: 4px 12px; border-radius: 999px; }
   .tag { color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
   .m-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
-  .sabores-titulo { font-weight: 700; font-size: 14px; margin: 16px 0 8px; color: #1c1714 !important; }
-  .sabores { display: flex; flex-wrap: wrap; gap: 6px; }
-  .sabor { font-size: 13px; background: #f6ecd9; color: #7a5418; padding: 5px 12px; border-radius: 999px; }
   .vacio { display: none; text-align: center; padding: 50px 20px; background: #fff; border: 1px solid #ebe5dc; border-radius: 18px; }
   .vacio-icono { font-size: 36px; }
   .vacio h3 { margin: 10px 0 6px; font-size: 19px; }
   .vacio p { color: #6b6058; margin: 0 0 20px; line-height: 1.5; }
   .vacio-btn { display: inline-block; padding: 12px 22px; border-radius: 10px; text-decoration: none; font: 500 14px 'Inter'; }
-  dialog { border: none; border-radius: 18px; padding: 0; max-width: 420px; width: 92%; }
+
+  /* Ventana del producto */
+  dialog { border: none; border-radius: 18px; padding: 0; max-width: 440px; width: 92%; max-height: 92vh; overflow-y: auto; }
   dialog::backdrop { background: rgba(0,0,0,.55); }
-  #m-img { width: 100%; height: 280px; object-fit: contain; padding: 10px; }
+  .galeria { position: relative; touch-action: pan-y; }
+  #m-img { width: 100%; height: 280px; object-fit: contain; padding: 10px; display: block; user-select: none; }
+  .flecha { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; border: none;
+            background: rgba(255,255,255,.95); box-shadow: 0 2px 8px rgba(0,0,0,.15); font-size: 22px; cursor: pointer;
+            place-items: center; color: #1c1714; }
+  .flecha.izq { left: 10px; }
+  .flecha.der { right: 10px; }
+  .cerrar-x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: none;
+              background: rgba(255,255,255,.95); box-shadow: 0 2px 8px rgba(0,0,0,.15); font-size: 16px; cursor: pointer; z-index: 2; }
   .thumbs { display: flex; gap: 8px; padding: 0 20px; overflow-x: auto; }
   .thumbs img { width: 58px; height: 58px; flex-shrink: 0; object-fit: contain; padding: 4px;
                 border: 2px solid #ebe5dc; border-radius: 10px; cursor: pointer; background: #fff; }
@@ -82,10 +94,53 @@
   .m { padding: 16px 20px 20px; }
   .m h2 { margin: 0 0 4px; text-transform: uppercase; font-size: 20px; }
   .m p { color: #5c524b; line-height: 1.6; }
-  .btns { display: flex; gap: 10px; margin-top: 16px; }
-  .btns a, .btns button { flex: 1; padding: 11px; border-radius: 10px; font: 500 14px 'Inter'; text-align: center; cursor: pointer; text-decoration: none; }
+  .sec-titulo { font-weight: 700; font-size: 14px; margin: 18px 0 8px; color: #1c1714 !important; }
+  .ayuda { margin: -4px 0 8px; font-size: 13px; color: #9c9087 !important; }
+  .ayuda.alerta { color: #dc2626 !important; font-weight: 600; }
+  .opciones { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opcion { padding: 8px 14px; border-radius: 10px; border: 1px solid #d6cdc2; background: #fff; font: 500 14px 'Inter'; cursor: pointer; color: #1c1714; }
+  .opcion.on { border-color: var(--dorado); background: #faf3e6; box-shadow: inset 0 0 0 1px var(--dorado); }
+  .sabores { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sabor { font: 500 13px 'Inter'; background: #f6ecd9; color: #7a5418; padding: 6px 13px; border-radius: 999px; border: none; cursor: pointer; }
+  .sabor.on { background: var(--dorado); color: var(--oscuro); }
+  .sabor-desc { display: none; margin-top: 10px; background: #faf6ee; border: 1px solid #efe3cc; border-radius: 12px;
+                padding: 10px 12px; font-size: 14px; color: #5c524b; line-height: 1.5; }
+  .btns { display: flex; gap: 10px; margin-top: 18px; }
+  .btns a, .btns button { flex: 1; padding: 12px; border-radius: 10px; font: 600 14px 'Inter'; text-align: center; cursor: pointer; text-decoration: none; }
+  .agregar { background: var(--oscuro); color: #fff; border: none; transition: background .2s; }
+  .agregar.ok { background: #15803d; }
+  .agregar:disabled { opacity: .45; cursor: not-allowed; }
   .wa { background: #22c55e; color: #fff; border: none; }
-  .close { background: #fff; border: 1px solid #d6cdc2; color: #1c1714; }
+  .rel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .rel-item { border: 1px solid #ebe5dc; border-radius: 12px; overflow: hidden; cursor: pointer; background: #fff; }
+  .rel-item img { width: 100%; height: 80px; object-fit: contain; padding: 6px; display: block; }
+  .rel-item div { padding: 6px 8px 8px; }
+  .rel-item b { font-size: 11px; line-height: 1.3; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .rel-item span { font-size: 12px; color: var(--dorado-oscuro); font-weight: 600; }
+
+  /* Lista de consulta */
+  .btn-lista { position: fixed; left: 18px; bottom: 18px; height: 52px; padding: 0 18px; border-radius: 999px; border: none;
+               background: var(--oscuro); color: #fff; font: 600 15px 'Inter'; display: none; align-items: center; gap: 8px;
+               box-shadow: 0 6px 18px rgba(0,0,0,.25); cursor: pointer; z-index: 20; }
+  .btn-lista span { background: var(--dorado); color: var(--oscuro); min-width: 24px; height: 24px; border-radius: 999px;
+                    display: grid; place-items: center; font-size: 13px; padding: 0 6px; }
+  .lista-dlg { padding: 20px; }
+  .lista-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .lista-head h2 { margin: 0; font-size: 20px; }
+  .x { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #e5ddd2; background: #fff; cursor: pointer; font-size: 15px; }
+  .item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #f0ebe3; }
+  .item-info b { display: block; font-size: 14px; }
+  .item-info span { font-size: 13px; color: #7c6f64; }
+  .cant { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .cant button { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #d6cdc2; background: #fff; font-size: 16px; cursor: pointer; }
+  .lista-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; padding: 14px 0 4px; }
+  .lista-nota { font-size: 12px; color: #9c9087; margin: 4px 0 14px; }
+  .lista-enviar { display: block; text-align: center; padding: 13px; border-radius: 12px; text-decoration: none; font: 600 15px 'Inter'; }
+  .lista-vaciar { display: block; width: 100%; margin-top: 8px; background: none; border: none; color: #9c9087; font: 500 13px 'Inter'; cursor: pointer; padding: 8px; }
+
+  .toast { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%) translateY(20px); background: var(--oscuro); color: #fff;
+           padding: 10px 18px; border-radius: 999px; font-size: 14px; opacity: 0; transition: all .25s; z-index: 30; pointer-events: none; }
+  .toast.ver { opacity: 1; transform: translateX(-50%); }
   .flotante { position: fixed; right: 18px; bottom: 18px; width: 58px; height: 58px; border-radius: 50%; background: #25d366;
               display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0,0,0,.25); z-index: 20; transition: transform .2s; }
   .flotante:hover { transform: scale(1.08); }
@@ -94,7 +149,6 @@
             cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.25); z-index: 20;
             opacity: 0; pointer-events: none; transform: translateY(10px); transition: all .25s; }
   .arriba.ver { opacity: 1; pointer-events: auto; transform: none; }
-  .arriba:hover { background: var(--oscuro-2); }
   footer { text-align: center; font-size: 13px; color: #9c9087; padding: 10px 0 90px; }
 </style>
 </head>
@@ -120,7 +174,6 @@
   </div>
   <div class="grid" id="grid"></div>
 
-  <!-- Mensaje cuando no hay resultados -->
   <div class="vacio" id="vacio">
     <div class="vacio-icono">🔍</div>
     <h3 id="vacio-titulo"></h3>
@@ -129,6 +182,9 @@
   </div>
 </main>
 <footer>Venta exclusiva para mayores de 18 años</footer>
+
+<!-- Botón de la lista de consulta -->
+<button id="btn-lista" class="btn-lista">🧾 Mi lista <span id="lista-n">0</span></button>
 
 <!-- Botón volver arriba -->
 <button id="arriba" class="arriba" aria-label="Volver arriba">
@@ -140,8 +196,16 @@
   <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/><path d="M16.6 14.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
 </a>
 
+<div class="toast" id="toast"></div>
+
+<!-- Ventana del producto -->
 <dialog id="modal">
-  <img id="m-img" alt="">
+  <div class="galeria" id="galeria">
+    <img id="m-img" alt="">
+    <button class="flecha izq" id="prev" aria-label="Foto anterior">‹</button>
+    <button class="flecha der" id="next" aria-label="Foto siguiente">›</button>
+    <button class="cerrar-x" id="m-cerrar" aria-label="Cerrar">✕</button>
+  </div>
   <div class="thumbs" id="m-thumbs"></div>
   <div class="m">
     <div class="m-tags">
@@ -151,15 +215,39 @@
     <h2 id="m-nombre"></h2>
     <div id="m-precio"></div>
     <p id="m-desc"></p>
-    <div id="m-sabores-box">
-      <p class="sabores-titulo">Sabores disponibles</p>
-      <div class="sabores" id="m-sabores"></div>
+
+    <div id="m-pres-box">
+      <p class="sec-titulo">Presentación</p>
+      <div class="opciones" id="m-pres"></div>
     </div>
+
+    <div id="m-sabores-box">
+      <p class="sec-titulo">Sabores disponibles</p>
+      <p class="ayuda" id="m-ayuda"></p>
+      <div class="sabores" id="m-sabores"></div>
+      <div class="sabor-desc" id="m-sabor-desc"></div>
+    </div>
+
     <div class="btns">
-      <a id="m-wa" class="wa" target="_blank">Preguntar por WhatsApp</a>
-      <button class="close" onclick="modal.close()">Cerrar</button>
+      <button id="m-agregar" class="agregar">➕ Agregar a mi lista</button>
+      <a id="m-wa" class="wa" target="_blank">💬 Preguntar</a>
+    </div>
+
+    <div id="m-rel-box">
+      <p class="sec-titulo">También te puede interesar</p>
+      <div class="rel" id="m-rel"></div>
     </div>
   </div>
+</dialog>
+
+<!-- Ventana de la lista de consulta -->
+<dialog id="lista-dlg" class="lista-dlg">
+  <div class="lista-head"><h2>Mi lista</h2><button class="x" id="lista-x" aria-label="Cerrar">✕</button></div>
+  <div id="lista-items"></div>
+  <div class="lista-total" id="lista-total"></div>
+  <p class="lista-nota">Es solo una consulta: te confirmamos disponibilidad y precio por WhatsApp.</p>
+  <a id="lista-wa" class="wa lista-enviar" target="_blank">Enviar lista por WhatsApp</a>
+  <button id="lista-vaciar" class="lista-vaciar">Vaciar lista</button>
 </dialog>
 
 <script>
@@ -184,19 +272,28 @@
   };
 
   // ✏️ Tus productos
-  //    precio:      número sin puntos ni $   -> precio: 45000
-  //                 (si no lo pones, sale "Consultar precio")
-  //    precioAntes: opcional, precio tachado para promociones
-  //    etiqueta:    opcional -> "Nuevo", "Más vendido", "Promoción" o "Agotado"
-  //                 (los de "Promoción" salen solos en la sección de promociones)
-  //    imagen:      una foto  -> imagen: "foto.jpg"
-  //    imagenes:    varias    -> imagenes: ["foto1.jpg", "foto2.jpg"]
-  //    sabores:     opcional
-  //    garantia:    true -> muestra "Garantía incluida"
+  //    precio:         número sin puntos ni $  -> precio: 45000
+  //                    (si no lo pones, sale "Consultar precio")
+  //    precioAntes:    opcional, precio tachado para promociones
+  //    presentaciones: opcional, tamaños con su propio precio:
+  //                    presentaciones: [ { nombre: "375 ml", precio: 35000 },
+  //                                      { nombre: "750 ml", precio: 65000 } ]
+  //                    (si lo usas, no hace falta poner "precio")
+  //    etiqueta:       opcional -> "Nuevo", "Más vendido", "Promoción" o "Agotado"
+  //    imagen:         una foto  -> imagen: "foto.jpg"
+  //    imagenes:       varias    -> imagenes: ["foto1.jpg", "foto2.jpg"]
+  //    sabores:        opcional. Solo el nombre -> "Uva"
+  //                    o con descripción        -> { nombre: "Mango", desc: "A qué sabe" }
+  //    garantia:       true -> muestra "Garantía incluida"
   const productos = [
-    { nombre: "Aguardiente 750 ml", categoria: "Destilados", precio: 65000,
+    { nombre: "Aguardiente", categoria: "Destilados",
       etiqueta: "Más vendido",
-      imagen: "aguardiente.jpg", descripcion: "Botella de 750 ml, ideal para reuniones." },
+      presentaciones: [
+        { nombre: "375 ml", precio: 35000 },
+        { nombre: "750 ml", precio: 65000 },
+        { nombre: "1 litro", precio: 82000 },
+      ],
+      imagen: "aguardiente.jpg", descripcion: "El clásico para reuniones y celebraciones." },
 
     { nombre: "Ron añejo 750 ml", categoria: "Destilados", precio: 78000, precioAntes: 88000,
       etiqueta: "Promoción",
@@ -206,14 +303,26 @@
       etiqueta: "Promoción",
       imagen: "crema.jpg", descripcion: "Licor cremoso, perfecto para servir frío." },
 
-    { nombre: "Cerveza six pack", categoria: "Cervezas", precio: 24000,
-      imagen: "cerveza.jpg", descripcion: "Six pack de latas de 330 ml." },
+    { nombre: "Cerveza", categoria: "Cervezas",
+      presentaciones: [
+        { nombre: "Lata x1", precio: 4500 },
+        { nombre: "Six pack", precio: 24000 },
+        { nombre: "Caja x24", precio: 90000 },
+      ],
+      imagen: "cerveza.jpg", descripcion: "Lata de 330 ml, bien fría." },
 
     { nombre: "Vaper 5 mil usos", categoria: "Vapers", precio: 45000,
       etiqueta: "Nuevo",
       imagenes: ["vaper1.jpg", "vaper1-b.jpg", "vaper1-c.jpg"],
       descripcion: "Desechable recargable, batería de 500 mAh.",
-      sabores: ["Mango", "Fresa", "Uva", "Sandía", "Menta"], garantia: true },
+      sabores: [
+        { nombre: "Mango", desc: "Sabor frutal y dulce, con un toque a pastel de mango." },
+        { nombre: "Fresa", desc: "Fresa madura con un final cremoso, tipo fresas con crema." },
+        { nombre: "Sandía", desc: "Refrescante y jugoso, con un toque helado." },
+        { nombre: "Menta", desc: "Mentolado intenso, sensación fría y limpia." },
+        "Uva",
+      ],
+      garantia: true },
 
     { nombre: "Vaper 10 mil usos", categoria: "Vapers", precio: 70000,
       etiqueta: "Agotado",
@@ -224,16 +333,37 @@
   // ---------- De aquí para abajo no necesitas tocar nada ----------
   const $ = id => document.getElementById(id);
   const waLink = texto => `https://wa.me/${WHATSAPP}?text=` + encodeURIComponent(texto);
-
-  // Quita tildes y mayúsculas para que "sandia" encuentre "Sandía" y "anejo" encuentre "añejo"
   const normalizar = t => (t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
   const fmt = n => "$" + n.toLocaleString("es-CO");
-  const precioHTML = p => p.precio
-    ? `<div class="precio">${fmt(p.precio)}${p.precioAntes ? `<s>${fmt(p.precioAntes)}</s>` : ''}</div>`
-    : `<div class="precio consultar">Consultar precio</div>`;
-  const fotos = p => (p.imagenes && p.imagenes.length) ? p.imagenes : [p.imagen];
 
+  const fotos = p => (p.imagenes && p.imagenes.length) ? p.imagenes : [p.imagen];
+  const pres = p => (p.presentaciones && p.presentaciones.length) ? p.presentaciones : null;
+  const saborNombre = s => typeof s === "string" ? s : s.nombre;
+  const saborDesc = s => typeof s === "string" ? "" : (s.desc || "");
+
+  const precioMin = p => {
+    if (pres(p)) {
+      const v = pres(p).map(x => x.precio).filter(Boolean);
+      return v.length ? Math.min(...v) : null;
+    }
+    return p.precio || null;
+  };
+  const precioHTML = (precio, antes) => precio
+    ? `<div class="precio">${fmt(precio)}${antes ? `<s>${fmt(antes)}</s>` : ''}</div>`
+    : `<div class="precio consultar">Consultar precio</div>`;
+  const precioCard = p => {
+    if (!pres(p)) return precioHTML(p.precio, p.precioAntes);
+    const m = precioMin(p);
+    if (!m) return precioHTML(null);
+    return `<div class="precio">${pres(p).length > 1 ? '<small>Desde</small>' : ''}${fmt(m)}</div>`;
+  };
+  const precioTexto = p => {
+    const m = precioMin(p);
+    if (!m) return "Consultar precio";
+    return (pres(p) && pres(p).length > 1 ? "Desde " : "") + fmt(m);
+  };
+
+  // ----- Secciones, búsqueda y orden -----
   const hayPromos = productos.some(p => p.etiqueta === "Promoción");
   const extras = [...new Set(productos.map(p => p.categoria))].filter(c => !ORDEN.includes(c));
   const cats = ["Todos", ...(hayPromos ? [PROMO] : []),
@@ -241,12 +371,9 @@
   let actual = "Todos", busqueda = "";
 
   const enSeccion = (p, c) =>
-    c === "Todos" ? true :
-    c === PROMO ? p.etiqueta === "Promoción" :
-    p.categoria === c;
-
+    c === "Todos" ? true : c === PROMO ? p.etiqueta === "Promoción" : p.categoria === c;
   const coincide = p =>
-    normalizar(p.nombre + " " + (p.sabores || []).join(" ")).includes(busqueda);
+    normalizar(p.nombre + " " + (p.sabores || []).map(saborNombre).join(" ")).includes(busqueda);
 
   function ordenar(lista) {
     const modo = $("orden").value;
@@ -254,10 +381,11 @@
       const agA = a.etiqueta === "Agotado", agB = b.etiqueta === "Agotado";
       if (agA !== agB) return agA ? 1 : -1;
       if (modo === "menor" || modo === "mayor") {
-        if (!a.precio && !b.precio) return 0;
-        if (!a.precio) return 1;
-        if (!b.precio) return -1;
-        return modo === "menor" ? a.precio - b.precio : b.precio - a.precio;
+        const pa = precioMin(a), pb = precioMin(b);
+        if (!pa && !pb) return 0;
+        if (!pa) return 1;
+        if (!pb) return -1;
+        return modo === "menor" ? pa - pb : pb - pa;
       }
       if (modo === "az") return a.nombre.localeCompare(b.nombre, "es");
       if (modo === "za") return b.nombre.localeCompare(a.nombre, "es");
@@ -280,17 +408,13 @@
   function pintar() {
     const lista = ordenar(productos.filter(p => enSeccion(p, actual) && coincide(p)));
     $("titulo").textContent =
-      actual === "Todos" ? "Todos los productos" :
-      actual === PROMO ? "Promociones" : actual;
+      actual === "Todos" ? "Todos los productos" : actual === PROMO ? "Promociones" : actual;
     $("conteo").textContent = lista.length + (lista.length === 1 ? " producto" : " productos");
     $("grid").innerHTML = "";
 
-    // Mensaje cuando no hay resultados
     if (!lista.length) {
       const texto = $("q").value.trim();
-      $("vacio-titulo").textContent = texto
-        ? `No encontramos "${texto}"`
-        : "No hay productos en esta sección";
+      $("vacio-titulo").textContent = texto ? `No encontramos "${texto}"` : "No hay productos en esta sección";
       $("vacio-wa").href = waLink(texto ? `Hola, ¿tienen ${texto}?` : MENSAJE_GENERAL);
       $("vacio").style.display = "block";
       $("grid").style.display = "none";
@@ -301,35 +425,128 @@
 
     lista.forEach(p => {
       const f = fotos(p);
+      const agotado = p.etiqueta === "Agotado";
       const c = document.createElement("div");
-      c.className = "card" + (p.etiqueta === "Agotado" ? " agotado" : "");
-      c.innerHTML = `<img src="${f[0]}" alt="${p.nombre}">
+      c.className = "card" + (agotado ? " agotado" : "");
+      c.innerHTML = `<img src="${f[0]}" alt="${p.nombre}" loading="lazy" decoding="async">
         ${p.etiqueta ? `<span class="etiqueta" style="background:${ETIQUETAS[p.etiqueta] || '#6b7280'}">${p.etiqueta}</span>` : ''}
         ${f.length > 1 ? `<span class="nfotos">+${f.length - 1}</span>` : ''}
-        <div class="info"><h3>${p.nombre}</h3>${precioHTML(p)}<p>${p.descripcion}</p>
-        ${p.garantia ? '<span class="badge">🛡 Garantía incluida</span>' : ''}</div>`;
+        <div class="info"><h3>${p.nombre}</h3>${precioCard(p)}<p>${p.descripcion}</p>
+        <div class="info-foot">
+          ${p.garantia ? '<span class="badge">🛡 Garantía incluida</span>' : ''}
+          ${agotado ? '' : '<button class="mas" aria-label="Agregar a mi lista">+</button>'}
+        </div></div>`;
       c.onclick = () => abrir(p);
+      const mas = c.querySelector(".mas");
+      if (mas) mas.onclick = e => {
+        e.stopPropagation();
+        // Si tiene tamaños o sabores, se abre la ventana para elegir
+        if (pres(p) || (p.sabores && p.sabores.length)) abrir(p);
+        else { agregarItem(p, null, null); toast("Agregado a tu lista ✓"); }
+      };
       $("grid").appendChild(c);
     });
   }
 
+  // ----- Ventana del producto -----
+  let sel = { p: null, pres: null, sabor: null, foto: 0 };
+
+  function mostrarFoto(i) {
+    const f = fotos(sel.p);
+    sel.foto = (i + f.length) % f.length;
+    $("m-img").src = f[sel.foto];
+    [...$("m-thumbs").children].forEach((t, k) => t.classList.toggle("on", k === sel.foto));
+  }
+
+  function textoItem(p, presI, saborI) {
+    let t = p.nombre;
+    if (pres(p) && presI !== null) t += ` (${pres(p)[presI].nombre})`;
+    if (p.sabores && saborI !== null) t += ` sabor ${saborNombre(p.sabores[saborI])}`;
+    return t;
+  }
+
+  function actualizarWA() {
+    const t = textoItem(sel.p, sel.pres, sel.sabor);
+    $("m-wa").href = waLink(sel.p.etiqueta === "Agotado"
+      ? `Hola, ¿cuándo vuelve a estar disponible: ${t}?`
+      : `Hola, me interesa: ${t}`);
+  }
+
+  function pintarPres() {
+    const ps = pres(sel.p);
+    if (!ps) {
+      $("m-pres-box").style.display = "none";
+      $("m-precio").innerHTML = precioHTML(sel.p.precio, sel.p.precioAntes);
+      return;
+    }
+    $("m-pres-box").style.display = "block";
+    $("m-pres").innerHTML = "";
+    ps.forEach((x, i) => {
+      const b = document.createElement("button");
+      b.className = "opcion" + (i === sel.pres ? " on" : "");
+      b.textContent = x.nombre;
+      b.onclick = () => { sel.pres = i; pintarPres(); actualizarWA(); };
+      $("m-pres").appendChild(b);
+    });
+    const x = ps[sel.pres];
+    $("m-precio").innerHTML = precioHTML(x.precio, x.precioAntes);
+  }
+
+  function pintarSabores() {
+    const ss = sel.p.sabores || [];
+    if (!ss.length) { $("m-sabores-box").style.display = "none"; return; }
+    $("m-sabores-box").style.display = "block";
+    $("m-ayuda").classList.remove("alerta");
+    $("m-ayuda").textContent = ss.some(saborDesc)
+      ? "Toca un sabor para ver a qué sabe"
+      : "Toca un sabor para elegirlo";
+    $("m-sabores").innerHTML = "";
+    ss.forEach((s, i) => {
+      const b = document.createElement("button");
+      b.className = "sabor" + (i === sel.sabor ? " on" : "");
+      b.textContent = saborNombre(s);
+      b.onclick = () => { sel.sabor = (sel.sabor === i ? null : i); pintarSabores(); actualizarWA(); };
+      $("m-sabores").appendChild(b);
+    });
+    const caja = $("m-sabor-desc");
+    if (sel.sabor !== null && saborDesc(ss[sel.sabor])) {
+      caja.innerHTML = `<b>${saborNombre(ss[sel.sabor])}:</b> ${saborDesc(ss[sel.sabor])}`;
+      caja.style.display = "block";
+    } else {
+      caja.style.display = "none";
+    }
+  }
+
+  function pintarRel() {
+    const rel = productos.filter(x => x !== sel.p && x.categoria === sel.p.categoria && x.etiqueta !== "Agotado").slice(0, 3);
+    if (!rel.length) { $("m-rel-box").style.display = "none"; return; }
+    $("m-rel-box").style.display = "block";
+    $("m-rel").innerHTML = "";
+    rel.forEach(x => {
+      const d = document.createElement("div");
+      d.className = "rel-item";
+      d.innerHTML = `<img src="${fotos(x)[0]}" alt="${x.nombre}" loading="lazy"><div><b>${x.nombre}</b><span>${precioTexto(x)}</span></div>`;
+      d.onclick = () => abrir(x);
+      $("m-rel").appendChild(d);
+    });
+  }
+
   function abrir(p) {
+    sel = { p, pres: pres(p) ? 0 : null, sabor: null, foto: 0 };
     const f = fotos(p);
-    $("m-img").src = f[0];
     $("m-thumbs").innerHTML = "";
     if (f.length > 1) {
       f.forEach((src, i) => {
         const t = document.createElement("img");
         t.src = src;
-        if (i === 0) t.className = "on";
-        t.onclick = () => {
-          $("m-img").src = src;
-          [...$("m-thumbs").children].forEach(x => x.classList.remove("on"));
-          t.classList.add("on");
-        };
+        t.alt = "";
+        t.onclick = () => mostrarFoto(i);
         $("m-thumbs").appendChild(t);
       });
     }
+    $("prev").style.display = $("next").style.display = f.length > 1 ? "grid" : "none";
+    mostrarFoto(0);
+
     const et = $("m-etiqueta");
     if (p.etiqueta) {
       et.textContent = p.etiqueta;
@@ -340,16 +557,110 @@
     }
     $("m-garantia").style.display = p.garantia ? "inline-block" : "none";
     $("m-nombre").textContent = p.nombre;
-    $("m-precio").innerHTML = precioHTML(p);
     $("m-desc").textContent = p.descripcion;
-    if (p.sabores && p.sabores.length) {
-      $("m-sabores").innerHTML = p.sabores.map(s => `<span class="sabor">${s}</span>`).join("");
-      $("m-sabores-box").style.display = "block";
-    } else {
-      $("m-sabores-box").style.display = "none";
+
+    pintarPres();
+    pintarSabores();
+
+    const agotado = p.etiqueta === "Agotado";
+    const b = $("m-agregar");
+    b.disabled = agotado;
+    b.classList.remove("ok");
+    b.textContent = agotado ? "Agotado" : "➕ Agregar a mi lista";
+
+    actualizarWA();
+    pintarRel();
+    if (!$("modal").open) $("modal").showModal();
+    $("modal").scrollTop = 0;
+  }
+
+  // Deslizar fotos con el dedo
+  let x0 = null;
+  $("galeria").addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
+  $("galeria").addEventListener("touchend", e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40 && fotos(sel.p).length > 1) mostrarFoto(sel.foto + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+  $("prev").onclick = () => mostrarFoto(sel.foto - 1);
+  $("next").onclick = () => mostrarFoto(sel.foto + 1);
+  $("m-cerrar").onclick = () => $("modal").close();
+
+  $("m-agregar").onclick = () => {
+    const p = sel.p;
+    if (p.sabores && p.sabores.length && sel.sabor === null) {
+      $("m-ayuda").textContent = "👆 Elige un sabor para agregarlo a tu lista";
+      $("m-ayuda").classList.add("alerta");
+      return;
     }
-    $("m-wa").href = waLink(`Hola, me interesa el producto: ${p.nombre}`);
-    $("modal").showModal();
+    agregarItem(p, sel.pres, sel.sabor);
+    const b = $("m-agregar");
+    b.textContent = "✓ Agregado a tu lista";
+    b.classList.add("ok");
+    setTimeout(() => { b.textContent = "➕ Agregar a mi lista"; b.classList.remove("ok"); }, 1500);
+  };
+
+  // ----- Lista de consulta (se guarda en el celular del cliente) -----
+  let lista = [];
+  try { lista = JSON.parse(localStorage.getItem("crisanta-lista")) || []; } catch (e) {}
+  const guardar = () => { try { localStorage.setItem("crisanta-lista", JSON.stringify(lista)); } catch (e) {} };
+
+  function agregarItem(p, presI, saborI) {
+    const texto = textoItem(p, presI, saborI);
+    const precio = pres(p) ? pres(p)[presI].precio : p.precio;
+    const existe = lista.find(i => i.texto === texto);
+    if (existe) existe.cantidad++;
+    else lista.push({ texto, precio: precio || null, cantidad: 1 });
+    guardar();
+    pintarLista();
+  }
+
+  function pintarLista() {
+    const n = lista.reduce((s, i) => s + i.cantidad, 0);
+    $("lista-n").textContent = n;
+    $("btn-lista").style.display = n ? "flex" : "none";
+
+    $("lista-items").innerHTML = lista.map((i, k) => `
+      <div class="item">
+        <div class="item-info"><b>${i.texto}</b><span>${i.precio ? fmt(i.precio) : "Consultar precio"}</span></div>
+        <div class="cant">
+          <button data-a="menos" data-i="${k}" aria-label="Quitar uno">−</button>
+          <span>${i.cantidad}</span>
+          <button data-a="mas" data-i="${k}" aria-label="Agregar uno">+</button>
+        </div>
+      </div>`).join("");
+
+    const total = lista.reduce((s, i) => s + (i.precio ? i.precio * i.cantidad : 0), 0);
+    $("lista-total").innerHTML = total ? `<span>Total aproximado</span><span>${fmt(total)}</span>` : "";
+
+    const lineas = lista.map(i => `• ${i.cantidad} x ${i.texto}${i.precio ? ` - ${fmt(i.precio * i.cantidad)}` : ""}`);
+    $("lista-wa").href = waLink(`Hola, quiero consultar por estos productos:\n${lineas.join("\n")}` +
+      (total ? `\n\nTotal aproximado: ${fmt(total)}` : ""));
+
+    if (!n && $("lista-dlg").open) $("lista-dlg").close();
+  }
+
+  $("lista-items").onclick = e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const k = +b.dataset.i;
+    if (b.dataset.a === "mas") lista[k].cantidad++;
+    else if (--lista[k].cantidad <= 0) lista.splice(k, 1);
+    guardar();
+    pintarLista();
+  };
+  $("btn-lista").onclick = () => { pintarLista(); $("lista-dlg").showModal(); };
+  $("lista-x").onclick = () => $("lista-dlg").close();
+  $("lista-vaciar").onclick = () => { lista = []; guardar(); pintarLista(); };
+
+  // ----- Varios -----
+  let tt;
+  function toast(t) {
+    $("toast").textContent = t;
+    $("toast").classList.add("ver");
+    clearTimeout(tt);
+    tt = setTimeout(() => $("toast").classList.remove("ver"), 1800);
   }
 
   window.addEventListener("scroll", () => {
@@ -357,11 +668,14 @@
   });
   $("arriba").onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
+  ["modal", "lista-dlg"].forEach(id => {
+    $(id).onclick = e => { if (e.target.id === id) $(id).close(); };
+  });
+
   $("flotante").href = waLink(MENSAJE_GENERAL);
   $("orden").onchange = pintar;
   $("q").oninput = e => { busqueda = normalizar(e.target.value.trim()); pintar(); };
-  $("modal").onclick = e => { if (e.target.id === "modal") $("modal").close(); };
-  pintarPills(); pintar();
+  pintarPills(); pintar(); pintarLista();
 </script>
 </body>
 </html>
