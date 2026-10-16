@@ -150,6 +150,14 @@
             opacity: 0; pointer-events: none; transform: translateY(10px); transition: all .25s; }
   .arriba.ver { opacity: 1; pointer-events: auto; transform: none; }
   footer { text-align: center; font-size: 13px; color: #9c9087; padding: 10px 0 90px; }
+
+  /* Barra de desplazamiento: solo visible al moverse */
+  html { scrollbar-width: thin; scrollbar-color: transparent transparent; transition: scrollbar-color .3s; }
+  html.moviendo { scrollbar-color: rgba(20,17,15,.35) transparent; }
+  html::-webkit-scrollbar { width: 8px; }
+  html::-webkit-scrollbar-track { background: transparent; }
+  html::-webkit-scrollbar-thumb { background: transparent; border-radius: 999px; }
+  html.moviendo::-webkit-scrollbar-thumb { background: rgba(20,17,15,.35); }
 </style>
 </head>
 <body>
@@ -667,6 +675,14 @@
     $("arriba").classList.toggle("ver", window.scrollY > 400);
   });
   $("arriba").onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // Mostrar la barra de desplazamiento solo mientras se mueve
+  let quieto;
+  window.addEventListener("scroll", () => {
+    document.documentElement.classList.add("moviendo");
+    clearTimeout(quieto);
+    quieto = setTimeout(() => document.documentElement.classList.remove("moviendo"), 1000);
+  });
 
   ["modal", "lista-dlg"].forEach(id => {
     $(id).onclick = e => { if (e.target.id === id) $(id).close(); };
