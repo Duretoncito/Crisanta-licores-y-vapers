@@ -42,6 +42,9 @@
   .pill.on { background: var(--dorado); color: var(--oscuro); border-color: var(--dorado); }
   .pill span { font-size: 11px; background: rgba(255,255,255,.15); padding: 2px 8px; border-radius: 999px; }
   .pill.on span { background: rgba(0,0,0,.15); }
+  /* Botón de Promociones resaltado */
+  .pill.hot { border-color: #dc2626; color: #fca5a5; }
+  .pill.hot.on { background: #dc2626; color: #fff; border-color: #dc2626; }
   main { max-width: 1100px; margin: auto; padding: 24px 16px; }
   .head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
   .head h1 { margin: 0; font-size: 26px; }
@@ -74,6 +77,7 @@
   .precio small { font-size: 12px; font-weight: 500; color: #7c6f64; }
   .precio s { font-size: 13px; font-weight: 400; color: #9c9087; }
   .precio.consultar { font-size: 14px; font-weight: 600; color: var(--dorado-oscuro); }
+  .ahorro { display: inline-block; font-size: 12px; font-weight: 600; background: #e7f6ee; color: #15803d; padding: 3px 10px; border-radius: 999px; margin: 0 0 10px; }
   .badge { font-size: 12px; background: #e7f6ee; color: #15803d; padding: 4px 12px; border-radius: 999px; }
   .tag { color: #fff; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 6px; }
   .m-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
@@ -87,6 +91,22 @@
   .vacio h3 { margin: 10px 0 6px; font-size: 19px; }
   .vacio p { color: #6b6058; margin: 0 0 20px; line-height: 1.5; }
   .vacio-btn { display: inline-block; padding: 12px 22px; border-radius: 10px; text-decoration: none; font: 500 14px 'Inter'; }
+  /* Avisos de promociones con regalo */
+  .nota { display: flex; gap: 10px; align-items: center; background: #faf3e6; border: 1px solid #efe3cc; border-radius: 12px;
+          padding: 10px 10px 10px 14px; margin-bottom: 16px; font-size: 14px; color: #5c524b; line-height: 1.45; animation: aparecer .35s ease backwards; }
+  .nota-icono { font-size: 20px; flex-shrink: 0; }
+  .nota-texto { flex: 1; }
+  .nota-texto b { color: #1c1714; }
+  .nota-texto a { color: var(--dorado-oscuro); font-weight: 600; }
+  .nota-x { border: none; background: none; color: #9c9087; font-size: 15px; cursor: pointer; padding: 4px 6px; flex-shrink: 0; transition: transform .2s; }
+  .nota-x:hover { transform: rotate(90deg); }
+  .regalos { background: #fff; border: 1px solid var(--dorado); border-radius: 16px; padding: 14px 16px; margin-bottom: 18px; animation: aparecer .35s ease backwards; }
+  .regalos h3 { margin: 0 0 4px; font-size: 16px; color: var(--dorado-oscuro); }
+  .regalo { display: flex; gap: 12px; align-items: center; padding: 10px 0; font-size: 14px; color: #5c524b; line-height: 1.45; }
+  .regalo + .regalo { border-top: 1px solid #f0ebe3; }
+  .regalo b { color: #1c1714; }
+  .regalo-icono { width: 34px; height: 34px; border-radius: 50%; background: #faf3e6; display: grid; place-items: center; flex-shrink: 0; font-size: 17px; }
+  .regalos-nota { font-size: 12px; color: #9c9087; margin: 4px 0 0; }
   /* Ventana del producto */
   dialog { border: none; border-radius: 18px; padding: 0; max-width: 440px; width: 92%; max-height: 92vh; overflow-y: auto; }
   dialog::backdrop { background: rgba(0,0,0,.55); }
@@ -203,8 +223,10 @@
   html::-webkit-scrollbar-track { background: transparent; }
   html::-webkit-scrollbar-thumb { background: transparent; border-radius: 999px; }
   html.moviendo::-webkit-scrollbar-thumb { background: rgba(20,17,15,.35); }
-  /* Aviso de domicilio gratis */
-  .aviso { background: var(--dorado); color: var(--oscuro); text-align: center; font: 600 13px 'Inter'; padding: 8px 16px; }
+  /* Franja de avisos (domicilio gratis y promociones) */
+  .aviso { background: var(--dorado); color: var(--oscuro); text-align: center; font: 600 13px 'Inter'; padding: 8px 16px; transition: opacity .3s; }
+  .aviso.link { cursor: pointer; }
+  .aviso.oculto { opacity: 0; }
   .lista-envio { font-size: 13px; background: #faf3e6; border: 1px solid #efe3cc; border-radius: 10px; padding: 10px 12px; margin: 10px 0 4px; color: #5c524b; }
   .lista-envio.ok { background: #e7f6ee; border-color: #bbe5cc; color: #15803d; font-weight: 600; }
   .lista-envio:empty { display: none; }
@@ -232,6 +254,7 @@
       <option value="za">Nombre: Z - A</option>
     </select>
   </div>
+  <div id="nota"></div>
   <div class="grid" id="grid"></div>
   <div class="vacio" id="vacio">
     <div class="vacio-icono">🔍</div>
@@ -249,7 +272,7 @@
 </button>
 <!-- Botón flotante de WhatsApp -->
 <a id="flotante" class="flotante" target="_blank" aria-label="Escríbenos por WhatsApp">
-  <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/><path d="M16.6 14.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.300.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
+  <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/><path d="M16.6 14.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
 </a>
 <div class="toast" id="toast"></div>
 <!-- Ventana del producto -->
@@ -270,7 +293,7 @@
     <div id="m-precio"></div>
     <p id="m-desc"></p>
     <div id="m-pres-box">
-      <p class="sec-titulo">Presentación</p>
+      <p class="sec-titulo" id="m-pres-titulo">Presentación</p>
       <div class="opciones" id="m-pres"></div>
     </div>
     <div id="m-sabores-box">
@@ -306,6 +329,26 @@
   const MENSAJE_GENERAL = "Hola, me interesa realizar un pedido";
   // ✏️ Monto mínimo para domicilio gratis
   const DOMICILIO_GRATIS = 70000;
+  // ✏️ Mensaje de la franja que lleva a Promociones
+  const MENSAJE_PROMOS = "🔥 Mira nuestras promociones";
+
+  // ✏️ ====== INTERRUPTOR DE PROMOCIONES ======
+  //    true  = se muestran los combos y los avisos de regalo
+  //    false = se ocultan TODOS de una vez (no se borra nada)
+  const PROMOS_ACTIVAS = true;
+
+  // ✏️ Promos de regalo (avisos informativos, no se agregan a la lista)
+  //    activa:  true = se muestra / false = se oculta
+  //    seccion: en qué sección sale el aviso pequeño ("Vapers", "Destilados", "Baterías"...)
+  //    icono:   un emoji
+  //    texto:   lo que esté entre <b> y </b> sale en negrita
+  const REGALOS = [
+    { activa: true, seccion: "Vapers", icono: "🍬",
+      texto: "Compra <b>2 vapers</b> de cualquier referencia y llévate <b>una gomita gratis</b>." },
+    { activa: true, seccion: "Destilados", icono: "🎁",
+      texto: "Compra <b>1 cápsula nacional + 1 importada</b> y recibe gratis <b>2 gomitas o 1 vaper de 5K puff</b>." },
+  ];
+
   // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
   const ORDEN = [ "Vapers", "Destilados", "Baterías", "Gomitas", "Licores", "Cervezas" ];
   // ✏️ Nombre de la sección automática de promociones
@@ -333,19 +376,22 @@
   // ✏️ Tus productos
   //    precio:         número sin puntos ni $  -> precio: 45000
   //                    (si no lo pones, sale "Consultar precio")
-  //    precioAntes:    opcional, precio tachado para promociones
-  //    presentaciones: opcional, tamaños con su propio precio:
+  //    precioAntes:    opcional, precio tachado (si es mayor, sale "Ahorras $...")
+  //    presentaciones: opcional, opciones con su propio precio:
   //                    presentaciones: [ { nombre: "375 ml", precio: 35000 },
-  //                                      { nombre: "750 ml", precio: 65000 } ]
+  //                                      { nombre: "750 ml", precio: 65000, precioAntes: 75000 } ]
   //                    (si lo usas, no hace falta poner "precio")
+  //    tituloOpciones: opcional, texto encima de las opciones (si no, dice "Presentación")
   //    etiqueta:       opcional -> "Nuevo", "Más vendido", "Promoción" o "Agotado"
   //    imagen:         una foto  -> imagen: "foto.jpg"
   //    imagenes:       varias    -> imagenes: ["foto1.jpg", "foto2.jpg"]
   //    sabores:        opcional. Solo el nombre -> "Uva"
   //                    o con descripción        -> { nombre: "Mango", desc: "A qué sabe" }
   //    garantia:       true -> muestra "Garantía incluida"
+  //    activa:         false -> oculta el producto sin borrarlo
+  //    combo:          true -> solo sale en Promociones y al buscar (no en "Todos" ni en las secciones)
   //    El orden de la lista es el orden en "Recomendados" (los que tienen etiqueta suben primero)
-  const productos = [
+  const catalogo = [
     // ===== MÁS VENDIDOS (salen primero, mezclados entre secciones) =====
     { nombre: "LOST MARY - 5 MIL PUFF", categoria: "Vapers", precio: 20000,
       imagen: "vaposimg/lostmary1.webp", descripcion: "",
@@ -383,7 +429,7 @@
       sabores: [], garantia: true },
 
     // ===== NUEVOS =====
-    { nombre: "PYNE POD - 8500 PUFF", categoria: "Vapers", precio: 25000,
+    { nombre: "PYNE POD - 8.5 MIL PUFF", categoria: "Vapers", precio: 25000,
       imagen: "", descripcion: "",
       etiqueta: "Nuevo",
       sabores: [], garantia: true },
@@ -478,8 +524,39 @@
     { nombre: "BATERÍA MINI", categoria: "Baterías", precio: 50000,
       imagen: "", descripcion: "",
       sabores: [], garantia: true },
+
+    // ===== COMBOS (solo salen en Promociones y al buscar) =====
+    { nombre: "2 CÁPSULAS", categoria: "Destilados", combo: true, activa: true,
+      etiqueta: "Promoción", tituloOpciones: "Elige las cápsulas",
+      presentaciones: [ { nombre: "Nacional", precio: 60000, precioAntes: 70000 },
+                        { nombre: "Tornasol", precio: 70000, precioAntes: 80000 } ],
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA NACIONAL + BATERÍA", categoria: "Destilados", combo: true, activa: true,
+      etiqueta: "Promoción", tituloOpciones: "Elige la batería",
+      presentaciones: [ { nombre: "Brass Knuckles", precio: 65000, precioAntes: 75000 },
+                        { nombre: "Brass Knuckles LED", precio: 75000, precioAntes: 85000 },
+                        { nombre: "Mini", precio: 75000, precioAntes: 85000 } ],
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA TORNASOL + BATERÍA", categoria: "Destilados", combo: true, activa: true,
+      etiqueta: "Promoción", tituloOpciones: "Elige la batería",
+      presentaciones: [ { nombre: "Brass Knuckles", precio: 70000, precioAntes: 80000 },
+                        { nombre: "Brass Knuckles LED", precio: 80000, precioAntes: 90000 },
+                        { nombre: "Mini", precio: 80000, precioAntes: 90000 } ],
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "6 GOMITAS", categoria: "Gomitas", combo: true, activa: true,
+      etiqueta: "Promoción", precio: 50000, precioAntes: 60000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
   ];
   // ---------- De aquí para abajo no necesitas tocar nada ----------
+  const productos = catalogo.filter(p => p.activa !== false && !(p.combo && !PROMOS_ACTIVAS));
+  const regalosActivos = PROMOS_ACTIVAS ? REGALOS.filter(r => r.activa) : [];
   const $ = id => document.getElementById(id);
   const waLink = texto => `https://wa.me/${WHATSAPP}?text=` + encodeURIComponent(texto);
   const normalizar = t => (t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -510,14 +587,18 @@
     }
     return p.precio || null;
   };
+  // Opción más barata de un producto con presentaciones
+  const opcionMin = p => pres(p).filter(x => x.precio).sort((a, b) => a.precio - b.precio)[0] || null;
+  const ahorroHTML = (precio, antes) =>
+    (precio && antes > precio) ? `<span class="ahorro">Ahorras ${fmt(antes - precio)}</span>` : "";
   const precioHTML = (precio, antes) => precio
-    ? `<div class="precio">${fmt(precio)}${antes ? `<s>${fmt(antes)}</s>` : ''}</div>`
+    ? `<div class="precio">${fmt(precio)}${antes ? `<s>${fmt(antes)}</s>` : ''}</div>${ahorroHTML(precio, antes)}`
     : `<div class="precio consultar">Consultar precio</div>`;
   const precioCard = p => {
     if (!pres(p)) return precioHTML(p.precio, p.precioAntes);
-    const m = precioMin(p);
-    if (!m) return precioHTML(null);
-    return `<div class="precio">${pres(p).length > 1 ? '<small>Desde</small>' : ''}${fmt(m)}</div>`;
+    const x = opcionMin(p);
+    if (!x) return precioHTML(null);
+    return `<div class="precio">${pres(p).length > 1 ? '<small>Desde</small>' : ''}${fmt(x.precio)}${x.precioAntes ? `<s>${fmt(x.precioAntes)}</s>` : ''}</div>${ahorroHTML(x.precio, x.precioAntes)}`;
   };
   const precioTexto = p => {
     const m = precioMin(p);
@@ -525,15 +606,20 @@
     return (pres(p) && pres(p).length > 1 ? "Desde " : "") + fmt(m);
   };
   // ----- Secciones, búsqueda y orden -----
-  const hayPromos = productos.some(p => p.etiqueta === "Promoción");
-  const extras = [...new Set(productos.map(p => p.categoria))].filter(c => !ORDEN.includes(c));
-  const cats = ["Todos", ...(hayPromos ? [PROMO] : []),
-                ...ORDEN.filter(c => productos.some(p => p.categoria === c)), ...extras];
+  const hayPromos = productos.some(p => p.etiqueta === "Promoción") || regalosActivos.length > 0;
+  const sueltos = productos.filter(p => !p.combo);
+  const extras = [...new Set(sueltos.map(p => p.categoria))].filter(c => !ORDEN.includes(c));
+  const cats = [...(hayPromos ? [PROMO] : []), "Todos",
+                ...ORDEN.filter(c => sueltos.some(p => p.categoria === c)), ...extras];
   let actual = "Todos", busqueda = "";
-  const enSeccion = (p, c) =>
-    c === "Todos" ? true : c === PROMO ? p.etiqueta === "Promoción" : p.categoria === c;
+  // Los combos solo salen en Promociones, o al buscar
+  const enSeccion = (p, c, buscando) => {
+    if (p.combo) return c === PROMO || (buscando && (c === "Todos" || c === p.categoria));
+    return c === "Todos" ? true : c === PROMO ? p.etiqueta === "Promoción" : p.categoria === c;
+  };
   const coincide = p =>
-    normalizar(p.nombre + " " + (p.sabores || []).map(saborNombre).join(" ")).includes(busqueda);
+    normalizar(p.nombre + " " + (p.sabores || []).map(saborNombre).join(" ") + " " +
+               (pres(p) || []).map(x => x.nombre).join(" ")).includes(busqueda);
   // Posición según la etiqueta (para "Recomendados")
   const rango = p => {
     const i = PRIORIDAD.indexOf(p.etiqueta);
@@ -556,25 +642,79 @@
       return rango(a) - rango(b);   // Recomendados
     });
   }
+  // Cambia de sección
+  function irA(c, subir) {
+    actual = c;
+    pintarPills();
+    pintar();
+    pintarNota();
+    if (subir) window.scrollTo({ top: 0, behavior: "smooth" });
+  }
   function pintarPills() {
     $("pills").innerHTML = "";
     cats.forEach(c => {
-      const total = productos.filter(p => enSeccion(p, c)).length;
+      const total = productos.filter(p => enSeccion(p, c, false)).length;
       const b = document.createElement("button");
-      b.className = "pill" + (c === actual ? " on" : "");
+      b.className = "pill" + (c === PROMO ? " hot" : "") + (c === actual ? " on" : "");
       b.innerHTML = `${c}<span>${total}</span>`;
-      b.onclick = () => { actual = c; pintarPills(); pintar(); };
+      b.onclick = () => irA(c, false);
       $("pills").appendChild(b);
     });
   }
+  // ----- Avisos de regalo -----
+  let cerrados = {};
+  try { cerrados = JSON.parse(sessionStorage.getItem("crisanta-avisos")) || {}; } catch (e) {}
+  function pintarNota() {
+    const caja = $("nota");
+    caja.innerHTML = "";
+    if (!regalosActivos.length) return;
+    // En Promociones: aviso completo con todas las promos de regalo
+    if (actual === PROMO) {
+      caja.innerHTML = `<div class="regalos"><h3>🎁 Llévate regalos en tu compra</h3>
+        ${regalosActivos.map(r => `<div class="regalo"><span class="regalo-icono">${r.icono}</span><span>${r.texto}</span></div>`).join("")}
+        <p class="regalos-nota">Al enviar tu lista por WhatsApp te confirmamos tu regalo.</p></div>`;
+      return;
+    }
+    // En las demás: aviso pequeño que se puede cerrar
+    if (cerrados[actual]) return;
+    let icono, texto;
+    if (actual === "Todos") {
+      icono = "🎁";
+      texto = `Tenemos <b>promos con regalo</b>. <a href="#" data-ir="promo">Ver promociones</a>`;
+    } else {
+      const rs = regalosActivos.filter(r => r.seccion === actual);
+      if (!rs.length) return;
+      icono = rs[0].icono;
+      texto = rs.map(r => r.texto).join("<br>");
+    }
+    caja.innerHTML = `<div class="nota"><span class="nota-icono">${icono}</span>
+      <div class="nota-texto">${texto}</div>
+      <button class="nota-x" aria-label="Cerrar aviso">✕</button></div>`;
+  }
+  $("nota").onclick = e => {
+    if (e.target.closest(".nota-x")) {
+      cerrados[actual] = true;
+      try { sessionStorage.setItem("crisanta-avisos", JSON.stringify(cerrados)); } catch (err) {}
+      pintarNota();
+    } else if (e.target.closest("[data-ir]")) {
+      e.preventDefault();
+      irA(PROMO, true);
+    }
+  };
   function pintar() {
-    const lista = ordenar(productos.filter(p => enSeccion(p, actual) && coincide(p)));
+    const lista = ordenar(productos.filter(p => enSeccion(p, actual, busqueda !== "") && coincide(p)));
     $("titulo").textContent =
       actual === "Todos" ? "Todos los productos" : actual === PROMO ? "Promociones" : actual;
     $("conteo").textContent = lista.length + (lista.length === 1 ? " producto" : " productos");
     $("grid").innerHTML = "";
     if (!lista.length) {
       const texto = $("q").value.trim();
+      // Promociones sin combos pero con regalos: solo se ve el aviso
+      if (actual === PROMO && !texto) {
+        $("vacio").style.display = "none";
+        $("grid").style.display = "none";
+        return;
+      }
       $("vacio-titulo").textContent = texto ? `No encontramos "${texto}"` : "No hay productos en esta sección";
       $("vacio-wa").href = waLink(texto ? `Hola, ¿tienen ${texto}?` : MENSAJE_GENERAL);
       $("vacio").style.display = "block";
@@ -602,7 +742,7 @@
       const mas = c.querySelector(".mas");
       if (mas) mas.onclick = e => {
         e.stopPropagation();
-        // Si tiene tamaños o sabores, se abre la ventana para elegir
+        // Si tiene opciones o sabores, se abre la ventana para elegir
         if (pres(p) || (p.sabores && p.sabores.length)) abrir(p);
         else { agregarItem(p, null, null); toast("Agregado a tu lista ✓"); }
       };
@@ -644,6 +784,7 @@
       return;
     }
     $("m-pres-box").style.display = "block";
+    $("m-pres-titulo").textContent = sel.p.tituloOpciones || "Presentación";
     $("m-pres").innerHTML = "";
     ps.forEach((x, i) => {
       const b = document.createElement("button");
@@ -825,6 +966,25 @@
   $("btn-lista").onclick = () => { pintarLista(); $("lista-dlg").showModal(); };
   $("lista-x").onclick = () => cerrar($("lista-dlg"));
   $("lista-vaciar").onclick = () => { lista = []; guardar(); pintarLista(); };
+  // ----- Franja de avisos (va alternando los mensajes) -----
+  const mensajesAviso = [`🛵 Domicilio gratis en compras de ${fmt(DOMICILIO_GRATIS)} o más`];
+  if (hayPromos) mensajesAviso.push(MENSAJE_PROMOS);
+  let iAviso = 0;
+  function mostrarAviso() {
+    const t = mensajesAviso[iAviso];
+    $("aviso").textContent = t;
+    $("aviso").classList.toggle("link", t === MENSAJE_PROMOS);
+  }
+  mostrarAviso();
+  if (mensajesAviso.length > 1) setInterval(() => {
+    $("aviso").classList.add("oculto");
+    setTimeout(() => {
+      iAviso = (iAviso + 1) % mensajesAviso.length;
+      mostrarAviso();
+      $("aviso").classList.remove("oculto");
+    }, reducirMovimiento() ? 0 : 300);
+  }, 4000);
+  $("aviso").onclick = () => { if ($("aviso").classList.contains("link")) irA(PROMO, true); };
   // ----- Varios -----
   let tt;
   function toast(t) {
@@ -850,10 +1010,9 @@
     $(id).addEventListener("cancel", e => { e.preventDefault(); cerrar($(id)); });
   });
   $("flotante").href = waLink(MENSAJE_GENERAL);
-  $("aviso").textContent = `🛵 Domicilio gratis en compras de ${fmt(DOMICILIO_GRATIS)} o más`;
   $("orden").onchange = pintar;
   $("q").oninput = e => { busqueda = normalizar(e.target.value.trim()); pintar(); };
-  pintarPills(); pintar(); pintarLista();
+  pintarPills(); pintar(); pintarNota(); pintarLista();
 </script>
 </body>
 </html>
