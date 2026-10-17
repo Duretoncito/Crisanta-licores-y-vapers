@@ -332,27 +332,55 @@
   //                    o con descripción        -> { nombre: "Mango", desc: "A qué sabe" }
   //    garantia:       true -> muestra "Garantía incluida"
   const productos = [
+      const productos = [
+    // ===== MÁS VENDIDOS (salen primero, mezclados entre secciones) =====
     { nombre: "LOST MARY - 5 MIL PUFF", categoria: "Vapers", precio: 20000,
       imagen: "vaposimg/lostmary1.webp", descripcion: "",
       etiqueta: "Más vendido",
       sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA - NACIONAL", categoria: "Destilados", precio: 35000,
+      imagen: "", descripcion: "",
+      etiqueta: "Más vendido",
+      sabores: [], garantia: true },
+
     { nombre: "DEATH ROW - 5 MIL PUFF", categoria: "Vapers", precio: 20000,
       imagen: "", descripcion: "",
+      etiqueta: "Más vendido",
+      sabores: [], garantia: true },
+
+    { nombre: "BATERÍA BRASS KNUCKLES LED", categoria: "Baterías", precio: 50000,
+      imagen: "", descripcion: "",
+      etiqueta: "Más vendido",
       sabores: [], garantia: true },
 
     { nombre: "DUMMY - 8 MIL PUFF", categoria: "Vapers", precio: 25000,
       imagen: "", descripcion: "",
+      etiqueta: "Más vendido",
       sabores: [], garantia: true },
 
-    { nombre: "NOLAN BAR - 10 MIL PUFF", categoria: "Vapers", precio: 30000,
+    { nombre: "GOMITAS", categoria: "Gomitas", precio: 10000,
       imagen: "", descripcion: "",
+      etiqueta: "Más vendido",
       sabores: [], garantia: true },
 
+    { nombre: "DOJO - 40 MIL PUFF", categoria: "Vapers", precio: 60000,
+      imagen: "", descripcion: "",
+      etiqueta: "Más vendido",
+      sabores: [], garantia: true },
+
+    // ===== NUEVOS =====
+    { nombre: "PYNE POD - 8500 PUFF", categoria: "Vapers", precio: 25000,
+      imagen: "", descripcion: "",
+      etiqueta: "Nuevo",
+      sabores: [], garantia: true },
+
+    // ===== VAPERS =====
     { nombre: "NICKY JAM - 10 MIL PUFF", categoria: "Vapers", precio: 30000,
       imagen: "", descripcion: "",
       sabores: [], garantia: true },
 
-    { nombre: "POD KING - 10 MIL PUFF", categoria: "Vapers", precio: 30000,
+    { nombre: "BUGATTI - 17 MIL PUFF", categoria: "Vapers", precio: 35000,
       imagen: "", descripcion: "",
       sabores: [], garantia: true },
 
@@ -360,7 +388,11 @@
       imagen: "", descripcion: "",
       sabores: [], garantia: true },
 
-    { nombre: "BUGATTI - 17 MIL PUFF", categoria: "Vapers", precio: 35000,
+    { nombre: "NOLAN BAR - 10 MIL PUFF", categoria: "Vapers", precio: 30000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "POD KING - 10 MIL PUFF", categoria: "Vapers", precio: 30000,
       imagen: "", descripcion: "",
       sabores: [], garantia: true },
 
@@ -380,15 +412,57 @@
       imagen: "", descripcion: "",
       sabores: [], garantia: true },
 
-    { nombre: "DOJO - 40 MIL PUFF", categoria: "Vapers", precio: 60000,
-      imagen: "", descripcion: "",
-      sabores: [], garantia: true },
-
     { nombre: "SPACEMAN - 50 MIL PUFF", categoria: "Vapers", precio: 70000,
       imagen: "", descripcion: "",
       sabores: [], garantia: true },
 
     { nombre: "LADY GALAX - 60 MIL PUFF", categoria: "Vapers", precio: 80000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    // ===== DESTILADOS (CÁPSULAS) =====
+    { nombre: "CÁPSULA TORNASOL - NACIONAL", categoria: "Destilados", precio: 40000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA COOKIES - IMPORTADA", categoria: "Destilados", precio: 65000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA JEETER JUICE - IMPORTADA", categoria: "Destilados", precio: 85000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA RUNZ - IMPORTADA", categoria: "Destilados", precio: 80000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA MUHA MEDS - IMPORTADA", categoria: "Destilados", precio: 75000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA BIG CHIEF - IMPORTADA", categoria: "Destilados", precio: 75000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA ROVE - IMPORTADA", categoria: "Destilados", precio: 65000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA LEMONADE - IMPORTADA", categoria: "Destilados", precio: 70000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "CÁPSULA ALIEN LABS - IMPORTADA", categoria: "Destilados", precio: 90000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    // ===== BATERÍAS =====
+    { nombre: "BATERÍA BRASS KNUCKLES", categoria: "Baterías", precio: 40000,
+      imagen: "", descripcion: "",
+      sabores: [], garantia: true },
+
+    { nombre: "BATERÍA MINI", categoria: "Baterías", precio: 50000,
       imagen: "", descripcion: "",
       sabores: [], garantia: true },
   ];
@@ -447,7 +521,7 @@
     c === "Todos" ? true : c === PROMO ? p.etiqueta === "Promoción" : p.categoria === c;
   const coincide = p =>
     normalizar(p.nombre + " " + (p.sabores || []).map(saborNombre).join(" ")).includes(busqueda);
-  function ordenar(lista) {
+function ordenar(lista) {
     const modo = $("orden").value;
     return [...lista].sort((a, b) => {
       const agA = a.etiqueta === "Agotado", agB = b.etiqueta === "Agotado";
