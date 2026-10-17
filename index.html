@@ -203,9 +203,17 @@
   html::-webkit-scrollbar-track { background: transparent; }
   html::-webkit-scrollbar-thumb { background: transparent; border-radius: 999px; }
   html.moviendo::-webkit-scrollbar-thumb { background: rgba(20,17,15,.35); }
+  /* Aviso de domicilio gratis */
+  .aviso { background: var(--dorado); color: var(--oscuro); text-align: center; font: 600 13px 'Inter'; padding: 8px 16px; }
+  .lista-envio { font-size: 13px; background: #faf3e6; border: 1px solid #efe3cc; border-radius: 10px; padding: 10px 12px; margin: 10px 0 4px; color: #5c524b; }
+  .lista-envio.ok { background: #e7f6ee; border-color: #bbe5cc; color: #15803d; font-weight: 600; }
+  .lista-envio:empty { display: none; }
+  .barra { height: 6px; background: #efe3cc; border-radius: 999px; margin-top: 8px; overflow: hidden; }
+  .barra i { display: block; height: 100%; background: var(--dorado); border-radius: 999px; transition: width .3s; }
 </style>
 </head>
 <body>
+<div class="aviso" id="aviso"></div>
 <div class="top">
   <div class="bar">
     <div class="brand"><div class="logo"><img src="imgfavicon.png.png" alt="Crisanta" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"></div><div><small>LICORES Y VAPERS</small><b>Crisanta</b></div></div>
@@ -241,7 +249,7 @@
 </button>
 <!-- Botón flotante de WhatsApp -->
 <a id="flotante" class="flotante" target="_blank" aria-label="Escríbenos por WhatsApp">
-  <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/><path d="M16.6 14.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
+  <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/><path d="M16.6 14.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.300.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
 </a>
 <div class="toast" id="toast"></div>
 <!-- Ventana del producto -->
@@ -286,6 +294,7 @@
   <div class="lista-head"><h2>Mi lista</h2><button class="x" id="lista-x" aria-label="Cerrar">✕</button></div>
   <div id="lista-items"></div>
   <div class="lista-total" id="lista-total"></div>
+  <div class="lista-envio" id="lista-envio"></div>
   <p class="lista-nota">Es solo una consulta: te confirmamos disponibilidad y precio por WhatsApp.</p>
   <a id="lista-wa" class="wa lista-enviar" target="_blank">Enviar lista por WhatsApp</a>
   <button id="lista-vaciar" class="lista-vaciar">Vaciar lista</button>
@@ -295,8 +304,10 @@
   const WHATSAPP = "573244847215";
   // ✏️ Mensaje del botón flotante
   const MENSAJE_GENERAL = "Hola, me interesa realizar un pedido";
+  // ✏️ Monto mínimo para domicilio gratis
+  const DOMICILIO_GRATIS = 70000;
   // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
-  const ORDEN = [ "Vapers", "Destilados", "Licores", "Cervezas",];
+  const ORDEN = [ "Vapers", "Destilados", "Baterías", "Gomitas", "Licores", "Cervezas" ];
   // ✏️ Nombre de la sección automática de promociones
   const PROMO = "🔥Promociones";
   // ✏️ Etiquetas disponibles y su color
@@ -308,6 +319,8 @@
   };
   // ✏️ Etiquetas que tienen brillo animado
   const BRILLAN = ["Promoción", "Nuevo"];
+  // ✏️ Prioridad en "Recomendados": las etiquetas de arriba salen primero
+  const PRIORIDAD = ["Más vendido", "Promoción", "Nuevo"];
   // ✏️ Iconos de las etiquetas (se dibujan al lado del texto)
   const svg = d => `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">${d}</svg>`;
   const ICONOS = {
@@ -331,8 +344,8 @@
   //    sabores:        opcional. Solo el nombre -> "Uva"
   //                    o con descripción        -> { nombre: "Mango", desc: "A qué sabe" }
   //    garantia:       true -> muestra "Garantía incluida"
+  //    El orden de la lista es el orden en "Recomendados" (los que tienen etiqueta suben primero)
   const productos = [
-      const productos = [
     // ===== MÁS VENDIDOS (salen primero, mezclados entre secciones) =====
     { nombre: "LOST MARY - 5 MIL PUFF", categoria: "Vapers", precio: 20000,
       imagen: "vaposimg/lostmary1.webp", descripcion: "",
@@ -521,7 +534,12 @@
     c === "Todos" ? true : c === PROMO ? p.etiqueta === "Promoción" : p.categoria === c;
   const coincide = p =>
     normalizar(p.nombre + " " + (p.sabores || []).map(saborNombre).join(" ")).includes(busqueda);
-function ordenar(lista) {
+  // Posición según la etiqueta (para "Recomendados")
+  const rango = p => {
+    const i = PRIORIDAD.indexOf(p.etiqueta);
+    return i === -1 ? PRIORIDAD.length : i;
+  };
+  function ordenar(lista) {
     const modo = $("orden").value;
     return [...lista].sort((a, b) => {
       const agA = a.etiqueta === "Agotado", agB = b.etiqueta === "Agotado";
@@ -535,7 +553,7 @@ function ordenar(lista) {
       }
       if (modo === "az") return a.nombre.localeCompare(b.nombre, "es");
       if (modo === "za") return b.nombre.localeCompare(a.nombre, "es");
-      return 0;
+      return rango(a) - rango(b);   // Recomendados
     });
   }
   function pintarPills() {
@@ -776,9 +794,23 @@ function ordenar(lista) {
       </div>`).join("");
     const total = lista.reduce((s, i) => s + (i.precio ? i.precio * i.cantidad : 0), 0);
     $("lista-total").innerHTML = total ? `<span>Total aproximado</span><span>${fmt(total)}</span>` : "";
+    // Aviso de domicilio gratis
+    const gratis = total >= DOMICILIO_GRATIS;
+    const envio = $("lista-envio");
+    if (!total) {
+      envio.innerHTML = "";
+    } else if (gratis) {
+      envio.className = "lista-envio ok";
+      envio.innerHTML = "🎉 ¡Tu pedido tiene domicilio gratis!";
+    } else {
+      envio.className = "lista-envio";
+      envio.innerHTML = `🛵 Te faltan <b>${fmt(DOMICILIO_GRATIS - total)}</b> para el domicilio gratis
+        <div class="barra"><i style="width:${Math.round(total / DOMICILIO_GRATIS * 100)}%"></i></div>`;
+    }
     const lineas = lista.map(i => `• ${i.cantidad} x ${i.texto}${i.precio ? ` - ${fmt(i.precio * i.cantidad)}` : ""}`);
     $("lista-wa").href = waLink(`Hola, me interesan estos productos:\n${lineas.join("\n")}` +
-      (total ? `\n\nTotal aproximado: ${fmt(total)}` : ""));
+      (total ? `\n\nTotal aproximado: ${fmt(total)}` : "") +
+      (gratis ? `\n🛵 Aplica domicilio gratis` : ""));
     if (!n && $("lista-dlg").open) cerrar($("lista-dlg"));
   }
   $("lista-items").onclick = e => {
@@ -818,6 +850,7 @@ function ordenar(lista) {
     $(id).addEventListener("cancel", e => { e.preventDefault(); cerrar($(id)); });
   });
   $("flotante").href = waLink(MENSAJE_GENERAL);
+  $("aviso").textContent = `🛵 Domicilio gratis en compras de ${fmt(DOMICILIO_GRATIS)} o más`;
   $("orden").onchange = pintar;
   $("q").oninput = e => { busqueda = normalizar(e.target.value.trim()); pintar(); };
   pintarPills(); pintar(); pintarLista();
