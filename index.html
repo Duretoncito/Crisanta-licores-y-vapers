@@ -330,7 +330,7 @@
   // ✏️ Monto mínimo para domicilio gratis
   const DOMICILIO_GRATIS = 70000;
   // ✏️ Mensaje de la franja que lleva a Promociones
-  const MENSAJE_PROMOS = "🔥 Mira nuestras promociones";
+  const MENSAJE_PROMOS = "¡Mira nuestras promociones!";
 
   // ✏️ ====== INTERRUPTOR DE PROMOCIONES ======
   //    true  = se muestran los combos y los avisos de regalo
@@ -343,7 +343,8 @@
   //    icono:   un emoji
   //    texto:   lo que esté entre <b> y </b> sale en negrita
   const REGALOS = [
-    { activa: true, seccion: "Vapers", icono: "🍬",
+      { activa: true, seccion: "Vapers",
+      icono: '<img src="https://api.iconify.design/noto-v1/candy.svg" width="20" height="20" alt="">',
       texto: "Compra <b>2 vapers</b> de cualquier referencia y llévate <b>una gomita gratis</b>." },
     { activa: true, seccion: "Destilados", icono: "🎁",
       texto: "Compra <b>1 cápsula nacional + 1 importada</b> y recibe gratis <b>2 gomitas o 1 vaper de 5K puff</b>." },
@@ -352,7 +353,7 @@
   // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
   const ORDEN = [ "Vapers", "Destilados", "Baterías", "Gomitas", "Licores", "Cervezas" ];
   // ✏️ Nombre de la sección automática de promociones
-  const PROMO = "🔥Promociones";
+  const PROMO = "Promociones";
   // ✏️ Etiquetas disponibles y su color
   const ETIQUETAS = {
     "Nuevo": "#2563eb",
