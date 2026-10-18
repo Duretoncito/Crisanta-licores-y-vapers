@@ -458,7 +458,7 @@
     { nombre: "GOMITAS", categoria: "Gomitas", precio: 10000,
       imagenes: ["vaposimg/gomitas1.jpg"], descripcion: "",
       etiqueta: "Más vendido",
-      sabores: [], garantia: true },
+      sabores: [] },
 
     { nombre: "DOJO - 40 MIL PUFF", categoria: "Vapers", precio: 60000,
       imagenes: ["vaposimg/dojo1.jpg"], descripcion: "",
@@ -647,9 +647,7 @@
       etiqueta: "Promoción", tituloOpciones: "Elige las cápsulas",
       presentaciones: [ { nombre: "Nacional", precio: 60000, precioAntes: 70000 },
                         { nombre: "Tornasol", precio: 70000, precioAntes: 80000 } ],
-      imagenes: ["vaposimg/prueba3.png", "vaposimg/tornasoluni2.png"], descripcion: `Este combo incluye:
-• 2 cápsulas nacionales o 2 cápsulas tornasol respectivamente
-• *No incluye la batería*`,
+      imagenes: ["vaposimg/prueba3.png", "vaposimg/tornasoluni2.png"], descripcion: "Este combo incluye:<br>• 2 cápsulas nacionales o 2 cápsulas tornasol respectivamente<br> *No incluye la batería*",,
       sabores: [], garantia: true },
 
     { nombre: "CÁPSULA NACIONAL + BATERÍA", categoria: "Destilados", combo: true, activa: true,
@@ -671,7 +669,7 @@
     { nombre: "6 GOMITAS", categoria: "Gomitas", combo: true, activa: true,
       etiqueta: "Promoción", precio: 50000, precioAntes: 60000,
      imagenes: ["vaposimg/gomitasuni6.png"], descripcion: "",
-      sabores: [], garantia: true },
+      sabores: []},
   ];
   // ---------- De aquí para abajo no necesitas tocar nada ----------
   const productos = catalogo.filter(p => p.activa !== false && !(p.combo && !PROMOS_ACTIVAS));
