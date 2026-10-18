@@ -135,6 +135,7 @@
   .m { padding: 16px 20px 20px; }
   .m h2 { margin: 0 0 4px; text-transform: uppercase; font-size: 20px; }
   .m p { color: #5c524b; line-height: 1.6; }
+  #m-desc { white-space: pre-line; }
   #m-precio.cambia { animation: precioCambio .3s ease; }
   .sec-titulo { font-weight: 700; font-size: 14px; margin: 18px 0 8px; color: #1c1714 !important; }
   .ayuda { margin: -4px 0 8px; font-size: 13px; color: #9c9087 !important; }
@@ -986,7 +987,7 @@
     }
     $("m-garantia").style.display = p.garantia ? "inline-block" : "none";
     $("m-nombre").textContent = p.nombre;
-    $("m-desc").textContent = p.descripcion;
+    $("m-desc").textContent = p.descripcion;$("m-desc").innerHTML = (p.descripcion || "").replace(/\*(.*?)\*/g, "<b>$1</b>");
     pintarPres();
     pintarSabores();
     const agotado = p.etiqueta === "Agotado";
