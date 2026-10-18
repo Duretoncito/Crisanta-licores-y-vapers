@@ -473,7 +473,7 @@
     { nombre: "GOMITAS", categoria: "Gomitas", precio: 10000,
       imagenes: ["vaposimg/gomitas1.jpg"], descripcion: "",
       etiqueta: "Más vendido",
-      sabores: [], garantia: true },
+      sabores: [], garantia: false },
 
     { nombre: "DOJO - 40 MIL PUFF", categoria: "Vapers", precio: 60000,
       imagenes: ["vaposimg/dojo1.jpg"], descripcion: `• Duración: Hasta 40.000 puffs (20 ml) | 5% nicotina
@@ -756,7 +756,7 @@
       etiqueta: "Promoción", precio: 50000, precioAntes: 60000,
      imagenes: ["vaposimg/gomitasuni6.png"], descripcion: `Este combo incluye:
 • 6 gomitas empacadas individualmente`,
-      sabores: [], garantia: true},
+      sabores: [], garantia: false},
   ];
   // ---------- De aquí para abajo no necesitas tocar nada ----------
   const productos = catalogo.filter(p => p.activa !== false && !(p.combo && !PROMOS_ACTIVAS));
