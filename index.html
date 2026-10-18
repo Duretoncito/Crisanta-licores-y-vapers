@@ -458,7 +458,7 @@
     { nombre: "GOMITAS", categoria: "Gomitas", precio: 10000,
       imagenes: ["vaposimg/gomitas1.jpg"], descripcion: "",
       etiqueta: "Más vendido",
-      sabores: [] },
+      sabores: [], garantia: true },
 
     { nombre: "DOJO - 40 MIL PUFF", categoria: "Vapers", precio: 60000,
       imagenes: ["vaposimg/dojo1.jpg"], descripcion: "",
@@ -669,7 +669,7 @@
     { nombre: "6 GOMITAS", categoria: "Gomitas", combo: true, activa: true,
       etiqueta: "Promoción", precio: 50000, precioAntes: 60000,
      imagenes: ["vaposimg/gomitasuni6.png"], descripcion: "",
-      sabores: []},
+      sabores: [], garantia: true},
   ];
   // ---------- De aquí para abajo no necesitas tocar nada ----------
   const productos = catalogo.filter(p => p.activa !== false && !(p.combo && !PROMOS_ACTIVAS));
