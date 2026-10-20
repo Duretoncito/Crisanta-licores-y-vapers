@@ -965,7 +965,7 @@
       const c = document.createElement("div");
       c.className = "card" + (agotado ? " agotado" : "");
       c.style.animationDelay = Math.min(i * 60, 480) + "ms";   // una tras otra
-      c.innerHTML = `<div class="foto cargando"><img src="${f[0]}" alt="${p.nombre}" loading="lazy" decoding="async"></div>
+      c.innerHTML = `<div class="foto cargando"><img src="${f[0]}" alt="${p.nombre}" decoding="async"></div>
         ${p.etiqueta ? `<span class="etiqueta${BRILLAN.includes(p.etiqueta) ? ' brilla' : ''}" style="background:${ETIQUETAS[p.etiqueta] || '#6b7280'}">${textoEtiqueta(p.etiqueta)}</span>` : ''}
         ${f.length > 1 ? `<span class="nfotos">+${f.length - 1}</span>` : ''}
         <div class="info"><h3>${p.nombre}</h3>${precioCard(p)}<p>${p.descripcion}</p>
