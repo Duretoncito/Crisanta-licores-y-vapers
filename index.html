@@ -233,9 +233,42 @@
   .lista-envio:empty { display: none; }
   .barra { height: 6px; background: #efe3cc; border-radius: 999px; margin-top: 8px; overflow: hidden; }
   .barra i { display: block; height: 100%; background: var(--dorado); border-radius: 999px; transition: width .3s; }
+  /* Aviso de mayoría de edad (+18) */
+  .edad { position: fixed; inset: 0; z-index: 100; background: rgba(20,17,15,.92); display: none;
+          align-items: center; justify-content: center; padding: 16px; }
+  .edad.ver { display: flex; animation: oscurecer .3s ease; }
+  .edad-caja { background: #fff; border-radius: 18px; padding: 26px 22px; max-width: 360px; width: 100%; text-align: center;
+               animation: entrar .3s cubic-bezier(.2,.8,.3,1); }
+  .edad-logo { width: 64px; height: 64px; border-radius: 16px; object-fit: cover; display: block; margin: 0 auto 12px; }
+  .edad-caja small { display: block; font-size: 11px; letter-spacing: .15em; color: var(--dorado-oscuro); }
+  .edad-caja b { display: block; font-size: 22px; margin: 2px 0 16px; }
+  .edad-caja h2 { margin: 0 0 6px; font-size: 19px; }
+  .edad-caja p { margin: 0 0 18px; font-size: 14px; color: #5c524b; line-height: 1.5; }
+  .edad-si, .edad-no { display: block; width: 100%; padding: 13px; border-radius: 10px; font: 600 14px 'Inter'; cursor: pointer; transition: transform .1s; }
+  .edad-si { background: var(--oscuro); color: #fff; border: none; margin-bottom: 8px; }
+  .edad-no { background: #fff; color: #5c524b; border: 1px solid #d6cdc2; }
+  .edad-si:active, .edad-no:active { transform: scale(.96); }
+  body.bloqueado { overflow: hidden; }
 </style>
 </head>
 <body>
+<!-- Aviso de mayoría de edad (+18) -->
+<div class="edad" id="edad" role="dialog" aria-modal="true" aria-labelledby="edad-titulo">
+  <div class="edad-caja">
+    <img class="edad-logo" src="imgfavicon.png.png" alt="Crisanta">
+    <small>LICORES Y VAPERS</small><b>Crisanta</b>
+    <div id="edad-pregunta">
+      <h2 id="edad-titulo">¿Eres mayor de 18 años?</h2>
+      <p>Este catálogo tiene productos con alcohol y nicotina. Su venta es exclusiva para mayores de edad.</p>
+      <button class="edad-si" id="edad-si">Sí, soy mayor de edad</button>
+      <button class="edad-no" id="edad-no">No, salir</button>
+    </div>
+    <div id="edad-rechazo" style="display:none">
+      <h2>Lo sentimos</h2>
+      <p>Debes ser mayor de edad para ver este catálogo.</p>
+    </div>
+  </div>
+</div>
 <div class="aviso" id="aviso"></div>
 <div class="top">
   <div class="bar">
@@ -273,7 +306,7 @@
 </button>
 <!-- Botón flotante de WhatsApp -->
 <a id="flotante" class="flotante" target="_blank" aria-label="Escríbenos por WhatsApp">
-  <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/><path d="M16.6 14.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.900 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
+  <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/><path d="M16.6 14.2c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
 </a>
 <div class="toast" id="toast"></div>
 <!-- Ventana del producto -->
@@ -332,6 +365,8 @@
   const DOMICILIO_GRATIS = 70000;
   // ✏️ Mensaje de la franja que lleva a Promociones
   const MENSAJE_PROMOS = "🔥 Mira nuestras promociones";
+  // ✏️ Días que se recuerda el "Sí, soy mayor de edad" (después vuelve a preguntar)
+  const DIAS_EDAD = 30;
 
   // ✏️ ====== INTERRUPTOR DE PROMOCIONES ======
   //    true  = se muestran los combos y los avisos de regalo
@@ -767,7 +802,7 @@
 *No incluye la batería*`,
       sabores: [], garantia: true },
 
-    { nombre: "CÁPSULA NACIONAL + BATERÍA", categoria: "Destilados", combo: true, activa: false,
+    { nombre: "CÁPSULA NACIONAL + BATERÍA", categoria: "Destilados", combo: true, activa: true,
       etiqueta: "Promoción", tituloOpciones: "Elige la batería",
       presentaciones: [ { nombre: "Brass Knuckles", precio: 65000, precioAntes: 75000 },
                         { nombre: "Brass Knuckles LED", precio: 75000, precioAntes: 85000 },
@@ -778,7 +813,7 @@
  *Kit completo listo para usar*`,
       sabores: [], garantia: true },
 
-    { nombre: "CÁPSULA TORNASOL + BATERÍA", categoria: "Destilados", combo: true, activa: false,
+    { nombre: "CÁPSULA TORNASOL + BATERÍA", categoria: "Destilados", combo: true, activa: true,
       etiqueta: "Promoción", tituloOpciones: "Elige la batería",
       presentaciones: [ { nombre: "Brass Knuckles", precio: 70000, precioAntes: 80000 },
                         { nombre: "Brass Knuckles LED", precio: 80000, precioAntes: 90000 },
@@ -1253,6 +1288,22 @@
     }, reducirMovimiento() ? 0 : 300);
   }, 4000);
   $("aviso").onclick = () => { if ($("aviso").classList.contains("link")) irA(PROMO, true); };
+  // ----- Aviso de mayoría de edad (+18) -----
+  let edadOk = 0;
+  try { edadOk = +localStorage.getItem("crisanta-edad") || 0; } catch (e) {}
+  if (Date.now() - edadOk > DIAS_EDAD * 86400000) {
+    $("edad").classList.add("ver");
+    document.body.classList.add("bloqueado");
+  }
+  $("edad-si").onclick = () => {
+    try { localStorage.setItem("crisanta-edad", Date.now()); } catch (e) {}
+    $("edad").classList.remove("ver");
+    document.body.classList.remove("bloqueado");
+  };
+  $("edad-no").onclick = () => {
+    $("edad-pregunta").style.display = "none";
+    $("edad-rechazo").style.display = "block";
+  };
   // ----- Varios -----
   let tt;
   function toast(t) {
