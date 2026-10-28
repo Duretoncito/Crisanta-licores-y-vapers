@@ -342,4 +342,13 @@ const catalogo = [
     imagenes: ["vaposimg/gomitasuni6.png"], descripcion: `Este combo incluye:
 • 6 gomitas empacadas individualmente`,
     sabores: [], garantia: false },
+  
+  { nombre: "2 CÁPSULAS", categoria: "Destilados", combo: true, activa: true,
+      etiqueta: "Promoción", tituloOpciones: "Elige las cápsulas",
+      presentaciones: [ { nombre: "Nacional", precio: 60000, precioAntes: 70000 },
+                        { nombre: "Tornasol", precio: 70000, precioAntes: 80000 } ],
+      imagenes: ["vaposimg/prueba3.png", "vaposimg/tornasoluni2.png"], descripcion: `Este combo incluye:
+• 2 cápsulas nacionales o 2 cápsulas tornasol respectivamente
+*No incluye la batería*`,
+      sabores: [], garantia: true },
 ];
