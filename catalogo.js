@@ -26,7 +26,7 @@ const REGALOS = [
 ];
 
 // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
-const ORDEN = [ "Vapers", "Destilados", "Baterías", "Gomitas", "Licores", "Cervezas" ];
+const ORDEN = [ "Vapers", "Destilados", "Baterías", "Gomitas", "Licores", "Cervezas", "Bebidas" ];
 // ✏️ Nombre de la sección automática de promociones
 const PROMO = "🔥Promociones";
 // ✏️ Etiquetas disponibles y su color
