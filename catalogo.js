@@ -34,12 +34,13 @@ const ETIQUETAS = {
   "Nuevo": "#2563eb",
   "Más vendido": "#b07d2a",
   "Promoción": "#dc2626",
+  "Exclusivo": "#7c3aed",
   "Agotado": "#6b7280",
 };
 // ✏️ Etiquetas que tienen brillo animado
-const BRILLAN = ["Promoción", "Nuevo"];
+const BRILLAN = ["Promoción", "Nuevo", "Exclusivo"];
 // ✏️ Prioridad en "Recomendados": las etiquetas de arriba salen primero
-const PRIORIDAD = ["Más vendido", "Promoción", "Nuevo"];
+const PRIORIDAD = ["Exclusivo", "Más vendido", "Promoción", "Nuevo"];
 // ✏️ Días que un producto sale como "Nuevo" desde su fecha de llegada (llego)
 const DIAS_NUEVO = 20;
 // ✏️ Iconos de las etiquetas (se dibujan al lado del texto)
@@ -48,6 +49,7 @@ const ICONOS = {
   "Nuevo": svg('<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>'),
   "Más vendido": svg('<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>'),
   "Promoción": svg('<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>'),
+  "Exclusivo": svg('<path d="M2 18 4 7l5 4 3-6 3 6 5-4 2 11z"/><line x1="4" y1="21" x2="20" y2="21"/>'),
   "Agotado": ""
 };
 
@@ -273,6 +275,7 @@ const catalogo = [
         "Melocotón",
         "Bayas"
       ], 
+     etiqueta: "Exclusivo",
       garantia: true },
 
     { nombre: "AIRFUZE - 30 MIL PUFF", categoria: "Vapers", precio: 50000,
