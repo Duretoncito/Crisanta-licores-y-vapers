@@ -40,7 +40,7 @@ const ETIQUETAS = {
 // ✏️ Etiquetas que tienen brillo animado
 const BRILLAN = ["Promoción", "Nuevo", "Exclusivo"];
 // ✏️ Prioridad en "Recomendados": las etiquetas de arriba salen primero
-const PRIORIDAD = ["Exclusivo", "Más vendido", "Promoción", "Nuevo"];
+const PRIORIDAD = ["Nuevo", "Más vendido", "Promoción", "Exclusivo"];
 // ✏️ Días que un producto sale como "Nuevo" desde su fecha de llegada (llego)
 const DIAS_NUEVO = 20;
 // ✏️ Iconos de las etiquetas (se dibujan al lado del texto)
@@ -289,6 +289,79 @@ const catalogo = [
       ], 
       garantia: true },
 
+      { nombre: "DUMMY - 50 MIL PUFF", categoria: "Vapers", precio: 70000,
+      imagenes: ["vaposimg/dummy50k1.jpg"], descripcion: `• Duración: Hasta 50.000 puffs (Modo Normal) / 30.000 puffs (Modo Boost) | 5% nicotina
+• Funciones: Pantalla digital LED (indicador de batería y e-líquido) + sistema de doble modo de potencia
+• Resistencia: Bobina de Malla (Mesh Coil) para vapor suave, denso y sabor intenso constante
+• Batería: Alta capacidad recargable de larga duración (puerto Tipo-C)`,
+      llego: "2026-10-30",
+      sabores: [
+        "Frambuesa",
+        "Gomita",
+        "Fresa",
+        "Uva",
+        "Menta",
+        "Arandano"
+      ], 
+      garantia: true },
+  
+    { nombre: "CLASE AZUL - 24 MIL PUFF", categoria: "Vapers", precio: 55000,
+      imagenes: ["vaposimg/tragoazul1.jpg"], descripcion: `• Duración: Hasta 24.000 puffs | 5% nicotina
+• Funciones: Diseño exclusivo estilo botella de tequila en porcelana + ventana transparente de líquido e indicador LED
+• Resistencia: Bobina de Malla (Mesh Coil) para un sabor intenso y vapor suave de principio a fin
+• Batería: 600 mAh recargable de carga rápida (puerto Tipo-C)`,
+      llego: "2026-10-30",
+      sabores: [
+        "Pitaya de arándanos",
+        "Fresa, arándano y cereza",
+        "Maracuya, kiwi y guayaba",
+        "Limón lima",
+        "Melón",
+        "Sandía",
+        "Arándanos",
+        "Frambuesa azul",
+        "Uva",
+        "Fresa, sandía y uva"
+      ], 
+      garantia: true },
+
+      { nombre: "SNOOPY SMOKE - 30 MIL PUFF", categoria: "Vapers", precio: 50000,
+      imagenes: ["vaposimg/snoopy1.jpg"], descripcion: `• Duración: Hasta 30.000 puffs | 5% nicotina
+• Funciones: Pantalla inteligente (indicador de batería y e-líquido) + conexión Bluetooth y flujo de aire ajustable
+• Resistencia: Doble Bobina de Malla (Dual Mesh Coil) para un sabor intenso y vapor denso
+• Batería: 950 mAh recargable de larga duración (puerto Tipo-C)`,
+      llego: "2026-10-30",
+      sabores: [
+        "Melón helado",
+        "Helado de arándano y helado de uva",
+        "Cereza y arándanos",
+        "Uva y sandía",
+        "Frambuesa y bebida energética",
+        "Kiwi, maracuya, guayaba y melocotón",
+        "Arándanos, pitahaya  y sandía a",
+        "Cereza, limón lima y frutos rojos",
+        "Limón rosa y arándanos",
+        "Melocotón y sandía",
+        "Sandía y limón lima",
+        "Mango melocotón y limonada rosa"
+      ], 
+      garantia: true },
+
+    { nombre: "PACHA MAMA - 25 MIL PUFF", categoria: "Vapers", precio: 45000,
+      imagenes: ["vaposimg/pachamama1.jpg"], descripcion: `• Duración: Hasta 25.000 puffs (Modo Eco) / 20.000 puffs (Modo Boost) / 15.000 puffs (Modo Storm) | 5% nicotina
+• Funciones: Pantalla completa HD (indicador de batería y e-líquido) + 3 modos de potencia (15W, 20W y 25W) y flujo de aire ajustable
+• Resistencia: Doble Bobina de Malla (Dual Mesh Coil) para máxima entrega de sabor y vapor denso
+• Batería: 1.000 mAh de ultra duración con carga rápida (puerto Tipo-C)`,
+      llego: "2026-10-30",
+      sabores: [
+        "Durazno con mora",
+        "Naranja",
+        "Fresas con kiwi",
+        "Manzana",
+        "Sin sabor"
+      ], 
+      garantia: true },  
+  
     { nombre: "HOOKALIT - 35 MIL PUFF", categoria: "Vapers", precio: 50000,
       imagenes: ["vaposimg/hookalit1.jpg"], descripcion: `• Duración: Hasta 35.000 puffs | 5% nicotina
 • Funciones: Pantalla digital LED + regulador de aire para calada estilo Hookah (narguile)
