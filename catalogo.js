@@ -163,9 +163,13 @@ const catalogo = [
         "Limonada rosa",
         "Estrella azul",
         "Menta Miami",
-        "Sandía y melocotón",
+        "Sandía con durazno",
         "Hawái",
-        "Frambuesa azul helada"
+        "Explosión ácida"
+        "Sandía",
+        "Bayas",
+        "Bomba tropical",
+        "Uva"
       ], 
       garantia: true },
 
@@ -202,7 +206,9 @@ const catalogo = [
       sabores: [
         "Menta",
         "Kiwi con arándanos",
-        "Arándanos y menta"
+        "Fresa con sandía",
+        "Cereza cola",
+        "Piña helada"
       ], 
       garantia: true },
 
@@ -212,12 +218,10 @@ const catalogo = [
 • Resistencia: Doble malla (Dual Mesh) para elegir entre calada suave o densa
 • Batería: 650 mAh recargable (puerto Tipo-C)`,
       sabores: [
-        "Uva",
-        "Helado de vainilla",
-        "Rosella negra",
-        "Helado",
-        "Fresa y sandía",
-        "Fresa y rosella"
+        "Uva manzana",
+        "Fresa con Rosella negra",
+        "Matcha helado",
+        "Sandía helado"
       ], 
       garantia: true },
 
@@ -236,14 +240,14 @@ const catalogo = [
 • Resistencia: Malla (Mesh Coil) diseñada para resaltar los sabores dulces y fríos
 • Batería: 650 mAh recargable (puerto Tipo-C)`,
       sabores: [
-        "Oasis ártico",
+        "Algodón de azucar",
         "Gomitas de frutos rojos",
         "Helado de fresa",
         "Gomita de pitaya",
         "Mango",
         "Limonada de manzana",
         "Mango frío intenso",
-        "Pitaya fresca",
+        "Helado de fresa",
         "Mezcla frutal"
       ], 
       garantia: true },
@@ -369,9 +373,9 @@ const catalogo = [
 • Batería: 1.300 mAh de ultra duración (puerto Tipo-C)`,
       llego: "2026-10-15",
       sabores: [
-        "Destello blanco",
-        "Sueño lúcido",
-        "Manzana",
+        "Mujer asesina",
+        "Menta",
+        "Mistica azul",
         "Amor"
       ], 
       garantia: true },
@@ -384,8 +388,11 @@ const catalogo = [
       llego: "2026-10-15",
       sabores: [
         "Mango ácido y piña",
-        "Melocotón con frambuesa",
-        "Menta Miami"
+        "Fresa con sandía ",
+        "Menta Miami",
+        "Durazno blanco",
+        "Fresa ácida",
+        "Durazno con sandía"
       ], 
       garantia: true },
 
@@ -397,9 +404,10 @@ const catalogo = [
       llego: "2026-10-15",
       sabores: [
         "Mora",
-        "Menta Miami",
+        "Uva dulce",
         "Polvo rosado ácido",
-        "Caramelo de frutos rojos"
+        "Mango y piña acida",
+        "Menta"
       ], 
       garantia: true },
 
