@@ -165,7 +165,7 @@ const catalogo = [
         "Menta Miami",
         "Sandía con durazno",
         "Hawái",
-        "Explosión ácida"
+        "Explosión ácida",
         "Sandía",
         "Bayas",
         "Bomba tropical",
