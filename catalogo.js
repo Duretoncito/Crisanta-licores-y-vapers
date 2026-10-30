@@ -71,7 +71,7 @@ const ICONOS = {
 //    El orden de la lista es el orden en "Recomendados" (los que tienen etiqueta suben primero)
 const catalogo = [
    // ===== MÁS VENDIDOS (salen primero, mezclados entre secciones) =====
-  { nombre: "LOST MARY - 5 MIL PUFF", categoria: "Vapers", precio: 20000,
+  { nombre: "LOST MARY - 5 MIL PUFF", categoria: "Vapers", precio: 25000,
       imagenes: ["vaposimg/lostmary1.jpg"], descripcion: `• Duración: 5.000 puffs (13.5 ml) | 5% nicotina
 • Funciones: Diseño "gordito" compacto, discreto y de activación automática al inhalar
 • Resistencia: Malla (Mesh Coil) de calada suave que mantiene el sabor sin quemarse
@@ -143,6 +143,7 @@ const catalogo = [
         "Guayaba",
         "Sin sabor"
       ], 
+     etiqueta: "Agotado",
       garantia: true },
 
     { nombre: "GOMITAS", categoria: "Gomitas", precio: 10000,
@@ -150,7 +151,7 @@ const catalogo = [
       etiqueta: "Más vendido",
       sabores: [], garantia: false },
 
-    { nombre: "DOJO - 40 MIL PUFF", categoria: "Vapers", precio: 60000,
+    { nombre: "DOJO - 40 MIL PUFF", categoria: "Vapers", precio: 55000,
       imagenes: ["vaposimg/dojo1.jpg"], descripcion: `• Duración: Hasta 40.000 puffs (20 ml) | 5% nicotina
 • Funciones: Pantalla curva 360° iluminada + 2 modos de potencia (Eco y Power)
 • Resistencia: Cuádruple malla (Quad Mesh) para máxima potencia de sabor y vapor
@@ -191,7 +192,7 @@ const catalogo = [
       ], 
       garantia: true },
 
-    { nombre: "BUGATTI - 17 MIL PUFF", categoria: "Vapers", precio: 35000,
+    { nombre: "BUGATTI - 17 MIL PUFF", categoria: "Vapers", precio: 40000,
       imagenes: ["vaposimg/bugatti1.jpg"], descripcion: `• Duración: 17.000 puffs | 5% nicotina
 • Funciones: Pantalla digital lateral, modos de potencia y chasis de lujo resistente
 • Resistencia: Doble malla (Dual Mesh) de alto rendimiento para nubes densas
@@ -203,7 +204,7 @@ const catalogo = [
       ], 
       garantia: true },
 
-    { nombre: "CHILLAX - 15 MIL PUFF", categoria: "Vapers", precio: 35000,
+    { nombre: "CHILLAX - 15 MIL PUFF", categoria: "Vapers", precio: 40000,
       imagenes: ["vaposimg/chillax1.jpg"], descripcion: `• Duración: 15.000 puffs (16 ml) | 5% nicotina
 • Funciones: Pantalla digital a color que se activa al moverlo + control de flujo de aire
 • Resistencia: Doble malla (Dual Mesh) para elegir entre calada suave o densa
@@ -312,7 +313,7 @@ const catalogo = [
       ], 
       garantia: true },
 
-    { nombre: "LADY GALAX - 60 MIL PUFF", categoria: "Vapers", precio: 80000,
+    { nombre: "LADY GALAX - 60 MIL PUFF", categoria: "Vapers", precio: 70000,
       imagenes: ["vaposimg/galax1.jpg"], descripcion: `• Duración: Hasta 60.000 puffs | 5% nicotina
 • Funciones: Pantalla digital indicadora de niveles, modos de potencia y diseño llamativo
 • Resistencia: Doble malla (Dual Mesh) para un golpe firme y sabor frutal concentrado
@@ -324,7 +325,6 @@ const catalogo = [
         "Polvo rosado ácido",
         "Caramelo de frutos rojos"
       ], 
-     etiqueta: "Agotado",
       garantia: true },
 
     // ===== DESTILADOS (CÁPSULAS) =====
@@ -344,7 +344,7 @@ const catalogo = [
         "Único"
       ], garantia: true },
 
-    { nombre: "CÁPSULA JEETER JUICE - IMPORTADA", categoria: "Destilados", precio: 85000,
+    { nombre: "CÁPSULA JEETER JUICE - IMPORTADA", categoria: "Destilados", precio: 80000,
       imagenes: ["vaposimg/jeeterjuice1.jpg"], descripcion: `• Contenido: 1 ml
 • Cepa: Sativa, Índica o Híbrida (según disponibilidad)
  *No incluye la batería*`,
@@ -387,7 +387,7 @@ const catalogo = [
         "Único"
       ], garantia: true },
     
-    { nombre: "CÁPSULA MAD LABS - IMPORTADA", categoria: "Destilados", precio: 80000,
+    { nombre: "CÁPSULA MAD LABS - IMPORTADA", categoria: "Destilados", precio: 70000,
       imagenes: ["vaposimg/madlabs1.jpg"], descripcion: `• Contenido: 1 ml
 • Cepa: Sativa, Índica o Híbrida (según disponibilidad)
  *No incluye la batería*`,
@@ -397,7 +397,7 @@ const catalogo = [
         "Cereal"
       ], garantia: true },
 
-    { nombre: "CÁPSULA LEMONADE - IMPORTADA", categoria: "Destilados", precio: 70000,
+    { nombre: "CÁPSULA LEMONADE - IMPORTADA", categoria: "Destilados", precio: 65000,
       imagenes: ["vaposimg/lemonade1.jpg"], descripcion: `• Contenido: 1 ml
 • Cepa: Sativa, Índica o Híbrida (según disponibilidad)
  *No incluye la batería*`,
@@ -405,7 +405,7 @@ const catalogo = [
         "Único"
       ], garantia: true },
 
-    { nombre: "CÁPSULA ALIEN LABS - IMPORTADA", categoria: "Destilados", precio: 90000,
+    { nombre: "CÁPSULA ALIEN LABS - IMPORTADA", categoria: "Destilados", precio: 80000,
       imagenes: ["vaposimg/alienlabs1.jpg"], descripcion: `• Contenido: 1 ml
 • Cepa: Sativa, Índica o Híbrida (según disponibilidad)
  *No incluye la batería*`,
