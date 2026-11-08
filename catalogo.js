@@ -397,7 +397,7 @@ const catalogo = [
       garantia: true },
 
   { nombre: "BATERÍA DAZZLEAF - SPACEMAN 510", categoria: "Baterías", precio: 90000,
-      imagenes: ["vaposimg/bastronauta.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal oculta (cápsulas de hasta 2 mL)
+      imagenes: ["vaposimg/bastronauta1.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal oculta (cápsulas de hasta 2 mL)
 - Funciones: 4 niveles de voltaje (2.4V - 4.2V) + modo precalentamiento
 - Batería: 550 mAh de larga duración (carga rápida USB-C)
 - Diseño: Figura de astronauta en silicona con pantalla LED en el casco`,
@@ -405,7 +405,7 @@ const catalogo = [
       sabores: [], garantia: true },
 
   { nombre: "BATERÍA DAZZLEAF - ALIEN 510", categoria: "Baterías", precio: 90000,
-      imagenes: ["vaposimg/balien.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal oculta (cápsulas de hasta 2 mL)
+      imagenes: ["vaposimg/balien1.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal oculta (cápsulas de hasta 2 mL)
 - Funciones: 4 niveles de voltaje (2.4V - 4.2V) + modo precalentamiento
 - Batería: 550 mAh de larga duración (carga rápida USB-C)
 - Diseño: Figura de alien en silicona con pantalla LED oculta en los ojos`,
