@@ -329,11 +329,11 @@ const catalogo = [
       ], 
       garantia: true },
 
-      { nombre: "SNOOPY SMOKE - 30 MIL PUFF", categoria: "Vapers", precio: 50000,
-      imagenes: ["vaposimg/snoopy1.jpg"], descripcion: `• Duración: Hasta 30.000 puffs | 5% nicotina
-• Funciones: Pantalla inteligente (indicador de batería y e-líquido) + conexión Bluetooth y flujo de aire ajustable
-• Resistencia: Doble Bobina de Malla (Dual Mesh Coil) para un sabor intenso y vapor denso
-• Batería: 950 mAh recargable de larga duración (puerto Tipo-C)`,
+      { nombre: "SNOOPY SMOKE PRO Z - 30 MIL PUFF", categoria: "Vapers", precio: 50000,
+      imagenes: ["vaposimg/snoopy1.jpg"], descripcion: `• Capacidad: Hasta 30.000 puffs (22 mL en doble tanque al 5% de nicotina)
+- Funciones: Sistema Dual Flavour (2 sabores en 1) con resistencias Mesh independientes
+- Batería: 650 mAh recargable de larga duración (carga rápida USB-C)
+- Diseño: Compacto bicolor en degradado con doble boquilla intercambiable e indicador LED`,
       llego: "2026-10-30",
       sabores: [
         "Melón helado",
