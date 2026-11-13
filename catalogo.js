@@ -522,7 +522,7 @@ const catalogo = [
       sabores: [], garantia: true },
 
       { nombre: "BATERIA BACKWOODS", categoria: "Baterías", precio: 40000,
-      imagenes: ["vaposimg/backwoods1.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal (para cualquier cápsula)
+      imagenes: ["vaposimg/backwooods1.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal (para cualquier cápsula)
 • Funciones: 3 niveles de voltaje ajustables + modo precalentamiento
 • Batería: 1100 mAh de larga duración (incluye cargador USB)
 • Diseño: Acabado metálico clásico tipo pen (CON WRAP)`,
