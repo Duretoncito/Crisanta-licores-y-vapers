@@ -521,6 +521,22 @@ const catalogo = [
 • Diseño: Acabado metálico clásico tipo pen (madera o dorado)`,
       sabores: [], garantia: true },
 
+      { nombre: "BATERIA BACKWOODS", categoria: "Baterías", precio: 40000,
+      imagenes: ["vaposimg/brassknuckles1.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal (para cualquier cápsula)
+• Funciones: 3 niveles de voltaje ajustables + modo precalentamiento
+• Batería: 1100 mAh de larga duración (incluye cargador USB)
+• Diseño: Acabado metálico clásico tipo pen (CON WRAP)`,
+       llego: "2026-11-13",
+      sabores: [], garantia: true },
+
+      { nombre: "BATERÍA ILUMINATI", categoria: "Baterías", precio: 40000,
+      imagenes: ["vaposimg/brassknuckles1.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal (para cualquier cápsula)
+• Funciones: 3 niveles de voltaje ajustables + modo precalentamiento
+• Batería: 1100 mAh de larga duración (incluye cargador USB)
+• Diseño: Acabado metálico clásico tipo pen (GRIS)`,
+       llego: "2026-11-13",
+      sabores: [], garantia: true },
+
     { nombre: "BATERÍA MINI", categoria: "Baterías", precio: 50000,
       imagenes: ["vaposimg/bateriamini1.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal (para cualquier cápsula)
 • Funciones: 3 niveles de voltaje ajustables + modo precalentamiento
