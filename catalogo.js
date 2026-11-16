@@ -101,7 +101,7 @@ const catalogo = [
       imagenes: ["vaposimg/nacional1.jpg"], descripcion: `• Contenido: 1 ml
 • Cepa: Sativa, Índica o Híbrida (según disponibilidad)
  *No incluye la batería*`,
-      etiqueta: "Más vendido",
+      etiqueta: "Más vendido", 
       sabores: [], garantia: true },
 
     { nombre: "DEATH ROW - 5 MIL PUFF", categoria: "Vapers", precio: 20000,
@@ -133,6 +133,7 @@ const catalogo = [
 • Batería: 900 mAh de larga duración (incluye cargador USB)
 • Diseño: Metálico tipo pen con pantalla LED que muestra el % de carga`,
       etiqueta: "Más vendido",
+     etiqueta: "Agotado",
       sabores: [], garantia: true },
 
     { nombre: "DUMMY - 8 MIL PUFF", categoria: "Vapers", precio: 25000,
@@ -523,7 +524,9 @@ const catalogo = [
 • Funciones: 3 niveles de voltaje ajustables + modo precalentamiento
 • Batería: 900 mAh de larga duración (incluye cargador USB)
 • Diseño: Acabado metálico clásico tipo pen (madera o dorado)`,
-      sabores: [], garantia: true },
+      sabores: [],
+     etiqueta: "Agotado",
+     garantia: true },
 
       { nombre: "BATERIA BACKWOODS", categoria: "Baterías", precio: 40000,
       imagenes: ["vaposimg/backwooods1.jpg"], descripcion: `• Compatibilidad: Rosca 510 universal (para cualquier cápsula)
