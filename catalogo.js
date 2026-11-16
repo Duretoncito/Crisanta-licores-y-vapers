@@ -487,7 +487,9 @@ const catalogo = [
  *No incluye la batería*`,
       sabores: [
         "Único"
-      ], garantia: true },
+      ],
+     etiqueta: "Agotado",
+     garantia: true },
     
     { nombre: "CÁPSULA MAD LABS - IMPORTADA", categoria: "Destilados", precio: 70000,
       imagenes: ["vaposimg/madlabs1.jpg"], descripcion: `• Contenido: 1 ml
