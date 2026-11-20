@@ -156,7 +156,8 @@ const catalogo = [
       imagenes: ["vaposimg/gomitas1.jpg"], descripcion: "",
       etiqueta: "Más vendido",
       sabores: [
-        "Piña y cola"
+        "Piña",
+        "Cola"
       ],
      garantia: false },
 
