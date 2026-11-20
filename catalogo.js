@@ -23,6 +23,9 @@ const REGALOS = [
   { activa: true, seccion: "Vapers",
     icono: '<img src="https://api.iconify.design/noto-v1/candy.svg" width="20" height="20" alt="">',
     texto: "Compra <b>2 vapers</b> de cualquier referencia y llévate <b>una gomita gratis</b>." },
+  { activa: true, seccion: "Destilados",
+    icono: "🎁",
+    texto: "Compra <b>una cápsula nacional y una importada</b> y llévate <b>GRATIS un vaper de 20.000 COP</b>." },
 ];
 
 // ✏️ Orden de las secciones (las que no tengan productos no aparecen)
